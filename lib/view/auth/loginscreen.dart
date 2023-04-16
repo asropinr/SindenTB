@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
@@ -160,7 +159,9 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400.h,
+      height: MediaQuery.of(context).viewInsets.bottom != 0
+          ? MediaQuery.of(context).size.height * 0.9
+          : 400.h,
       child: Column(
         children: [
           Container(

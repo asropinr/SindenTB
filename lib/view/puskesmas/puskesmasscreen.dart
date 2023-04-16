@@ -83,7 +83,8 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32.w),
                     child: Wrap(
-                      spacing: MediaQuery.of(context).size.width * .022,
+                      alignment: WrapAlignment.center,
+                      spacing: MediaQuery.of(context).size.width * .02,
                       runSpacing: 16.w,
                       children: List.generate(
                         artikelController.getListPuskesmaslonglat!.data!.length,
