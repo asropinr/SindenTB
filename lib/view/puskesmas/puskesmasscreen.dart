@@ -1,0 +1,238 @@
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:map_launcher/map_launcher.dart';
+import 'package:sinden_tb_app/constan/color.dart';
+import 'package:sinden_tb_app/controller/artikel_controller.dart';
+import 'package:sinden_tb_app/controller/register_controller.dart';
+
+class PuskesmasListScreen extends StatefulWidget {
+  final String long;
+  final String lat;
+  const PuskesmasListScreen({
+    Key? key,
+    required this.long,
+    required this.lat,
+  }) : super(key: key);
+
+  @override
+  State<PuskesmasListScreen> createState() => _PuskesmasListScreenState();
+}
+
+class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
+  ArtikelController artikelController = Get.find<ArtikelController>();
+  bool isLoading = true;
+
+  getData() async {
+    await artikelController.getListPusLongLat(widget.lat, widget.long);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+    print(widget.lat + widget.long);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColor.accentGreen,
+      appBar: AppBar(
+        backgroundColor: AppColor.accentGreen,
+        elevation: 0,
+        title: const Text(
+          "List Puskesmas",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColor.brown,
+          ),
+        ),
+        centerTitle: true,
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 32),
+            child: Image.asset(
+              "assets/ic_back_arrow.png",
+            ),
+          ),
+        ),
+      ),
+      body: Builder(
+        builder: (_) {
+          if (isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView(
+              children: [
+                SizedBox(
+                  height: 32.h,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: Wrap(
+                      spacing: MediaQuery.of(context).size.width * .022,
+                      runSpacing: 16.w,
+                      children: List.generate(
+                        artikelController.getListPuskesmaslonglat!.data!.length,
+                        (index) => InkWell(
+                          onTap: () {
+                            MapLauncher.showMarker(
+                                mapType: MapType.google,
+                                coords: Coords(
+                                    double.parse(artikelController
+                                        .getListPuskesmaslonglat!
+                                        .data![index]
+                                        .latitude!),
+                                    double.parse(artikelController
+                                        .getListPuskesmaslonglat!
+                                        .data![index]
+                                        .longitude!)),
+                                title: "Maps");
+                          },
+                          child: Container(
+                            width: 160.w,
+                            padding: EdgeInsets.only(
+                              left: 8.w,
+                              right: 8.w,
+                              top: 8.h,
+                              bottom: 14.h,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.w),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColor.green.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(2.w),
+                                      child: Image.network(
+                                        "https://s3-alpha-sig.figma.com/img/25c5/99cf/4c10804966693dc5845fa163ffddc39e?Expires=1681689600&Signature=gUAbrp-zJB4ugyCcE8D6FHl20YXjFX7YxgMiIHnOWmXX7dkO0U8oIBxdZsQAsgUVDCEroJ8VmVbvzSewVM~jgIUu8SladM3cr74nNzKKs7RQ4Ln2S-8yNGgQ3k2m2y8VUaxkYzKOKx6U71OjPSXdE8m1IzCNchvkZpUTEivn3r5mMjnwTbYd9yn~ZT4Y4Xc7yFGMr~IGdA8HhpODJn3qXAFb0hUI9Whq4vVz3EiV6iw8sMLpfjaqPnO04RAhoevs9VAjGhibQXcOff~mNGhbGv1kSnbg7r8BWt8hs-ok7QL7Bvlm4G3nOcbjAFMNt7ktFufugBrmPZmPp7PB50DQcw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
+                                        //height: 120.h,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColor.lightGreen,
+                                          borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(2.w),
+                                            topLeft: Radius.circular(4.w),
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: Text(
+                                          artikelController
+                                              .getListPuskesmaslonglat!
+                                              .data![index]
+                                              .distance!,
+                                          style: const TextStyle(
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                Text(
+                                  artikelController.getListPuskesmaslonglat!
+                                      .data![index].nama!,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Text(
+                                  artikelController.getListPuskesmaslonglat!
+                                      .data![index].alamat!,
+                                  style: const TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColor.grey700,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16.h,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5.h, horizontal: 8.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.lightGreen,
+                                    borderRadius: BorderRadius.circular(100.w),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            "assets/ic_maps.png",
+                                            height: 15.h,
+                                          ),
+                                          SizedBox(
+                                            width: 4.w,
+                                          ),
+                                          const Text(
+                                            "Lihat di Maps",
+                                            style: TextStyle(
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColor.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Image.asset(
+                                        "assets/ic_arrow_for.png",
+                                        height: 10.h,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ))
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+}

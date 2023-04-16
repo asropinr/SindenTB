@@ -1,0 +1,44 @@
+class GetPuskesmas {
+  int? status;
+  String? message;
+  List<Data>? data;
+
+  GetPuskesmas({this.status, this.message, this.data});
+
+  GetPuskesmas.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String? nama;
+
+  Data({this.nama});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    nama = json['nama'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nama'] = nama;
+    return data;
+  }
+}
