@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/shimmer.dart';
 import 'package:sinden_tb_app/controller/register_controller.dart';
+import 'package:sinden_tb_app/helper/dialog.dart';
 
 class RegistrasiScreen extends StatefulWidget {
   const RegistrasiScreen({
@@ -24,6 +25,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
   bool isKel = false;
   bool isPuskes = false;
   String? puskesmas;
+  bool enable = false;
   Map<String, dynamic> payload = {};
 
   selectDate() async {
@@ -46,6 +48,10 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
     });
 
     await registerController.getListProvinsi();
+    registerController.idProv = null;
+    registerController.idKab = null;
+    registerController.idKec = null;
+    registerController.idKel = null;
 
     setState(() {
       isLoading = false;
@@ -62,6 +68,23 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  validasi() {
+    if (registerController.namaLengkap.text.isEmpty &&
+        registerController.email.text.isEmpty &&
+        registerController.noWa.text.isEmpty &&
+        registerController.password.text.isEmpty &&
+        registerController.alamatLengkap.text.isEmpty &&
+        registerController.asalSekolah.text.isEmpty) {
+      setState(() {
+        enable = false;
+      });
+    } else {
+      setState(() {
+        enable = true;
+      });
+    }
   }
 
   @override
@@ -129,6 +152,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                     controller: registerController.email,
                     onChange: (val) {
                       registerController.email.text = val;
+                      validasi();
                     }),
                 _buildTextFieldItem(
                     itemTitle: "Password",
@@ -136,6 +160,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                     controller: registerController.password,
                     onChange: (val) {
                       registerController.password.text = val;
+                      validasi();
                     }),
                 _buildTextFieldItem(
                     itemTitle: "Nama Lengkap",
@@ -143,6 +168,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                     controller: registerController.namaLengkap,
                     onChange: (val) {
                       registerController.namaLengkap.text = val;
+                      validasi();
                     }),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
@@ -301,6 +327,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                     controller: registerController.asalSekolah,
                     onChange: (val) {
                       registerController.asalSekolah.text = val;
+                      validasi();
                     }),
                 _buildTextFieldItem(
                     itemTitle: "No WhatsApp",
@@ -308,6 +335,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                     controller: registerController.noWa,
                     onChange: (val) {
                       registerController.noWa.text = val;
+                      validasi();
                     }),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
@@ -363,6 +391,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                             value: registerController.idProv,
                             onChanged: (String? val) async {
                               registerController.idProv = val;
+                              registerController.idKab = null;
+                              registerController.idKec = null;
+                              registerController.idKel = null;
 
                               setState(() {
                                 isKab = true;
@@ -441,6 +472,8 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                   value: registerController.idKab,
                                   onChanged: (String? val) async {
                                     registerController.idKab = val;
+                                    registerController.idKec = null;
+                                    registerController.idKel = null;
                                     registerController.setKabupaten();
                                     setState(() {
                                       isKec = true;
@@ -520,6 +553,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                   value: registerController.idKec,
                                   onChanged: (String? val) async {
                                     registerController.idKec = val;
+                                    registerController.idKel = null;
 
                                     setState(() {
                                       isKel = true;
@@ -697,6 +731,20 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                           SizedBox(height: 16.h),
                         ],
                       ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        "Alamat Puskesmas",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Row(
                         children: [
                           InkWell(
@@ -755,7 +803,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                   width: 10.w,
                                 ),
                                 const Text(
-                                  "Lainnya",
+                                  "Tulis Manual",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
@@ -777,19 +825,8 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      "Alamat Puskesmas",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
                                     registerController.getPuskesmas?.status == 0
-                                        ? Text(
+                                        ? const Text(
                                             "Silahkan Pilih Opsi lainnya Untuk menuliskan Data Puskesmas Anda")
                                         : Container(
                                             width: MediaQuery.of(context)
@@ -892,7 +929,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                       disabledBorder: InputBorder.none,
                                       border: InputBorder.none,
                                       hintText: "Masukkan Alamat Puskesmas",
-                                      hintStyle: const TextStyle(
+                                      hintStyle: TextStyle(
                                         color: AppColor.grey800,
                                         fontSize: 12,
                                       ),
@@ -914,43 +951,52 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                   height: 50.h,
                 ),
                 InkWell(
-                  onTap: () async {
-                    //Get.to(BottomNavBarScreen());
-                    if (registerController.isLainnya == false) {
-                      puskesmas = registerController.puskesmas!;
-                    } else {
-                      puskesmas = registerController.alamatPuskesmas.text;
-                    }
-                    payload = {
-                      "user_name": registerController.namaLengkap.text,
-                      "user_email": registerController.email.text,
-                      "user_phone": registerController.noWa.text,
-                      "user_password": registerController.password.text,
-                      "user_address": registerController.alamatLengkap.text,
-                      "user_university": registerController.asalSekolah.text,
-                      "dob": DateFormat(
-                        "y-m-d",
-                      ).format(
-                        registerController.selectedDate!,
-                      ),
-                      "u_provinsi_id": registerController.idProv,
-                      "u_kabupaten_id": registerController.idKab,
-                      "u_kecamatan_id": registerController.idKec,
-                      "u_kelurahan_id": registerController.idKel,
-                      "user_puskesmas": puskesmas,
-                      "gender": registerController.jenisKelamin,
-                    };
+                  onTap: enable == false
+                      ? () {}
+                      : () async {
+                          //Get.to(BottomNavBarScreen());
+                          if (registerController.isLainnya == false) {
+                            puskesmas = registerController.puskesmas!;
+                          } else {
+                            puskesmas = registerController.alamatPuskesmas.text;
+                          }
+                          payload = {
+                            "user_name": registerController.namaLengkap.text,
+                            "user_email": registerController.email.text,
+                            "user_phone": registerController.noWa.text,
+                            "user_password": registerController.password.text,
+                            "user_address":
+                                registerController.alamatLengkap.text,
+                            "user_university":
+                                registerController.asalSekolah.text,
+                            "dob": DateFormat(
+                              "y-m-d",
+                            ).format(
+                              registerController.selectedDate!,
+                            ),
+                            "u_provinsi_id": registerController.idProv,
+                            "u_kabupaten_id": registerController.idKab,
+                            "u_kecamatan_id": registerController.idKec,
+                            "u_kelurahan_id": registerController.idKel,
+                            "user_puskesmas": puskesmas,
+                            "gender": registerController.jenisKelamin,
+                          };
 
-                    await postRegister(payload);
-                    if (registerController.postRegister!.status == 1) {
-                      Get.back();
-                    }
-                  },
+                          await postRegister(payload);
+                          if (registerController.postRegister!.status == 1) {
+                            Get.back();
+                          } else {
+                            Get.dialog(DialogError(
+                                title: "Register Gagal",
+                                message:
+                                    registerController.postRegister!.message!));
+                          }
+                        },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     padding: EdgeInsets.symmetric(vertical: 18.h),
                     decoration: BoxDecoration(
-                      color: AppColor.green,
+                      color: enable == true ? AppColor.green : AppColor.grey700,
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: const Text(

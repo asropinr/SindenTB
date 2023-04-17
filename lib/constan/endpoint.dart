@@ -10,6 +10,7 @@ class Endpoint {
   static const String registerUser = "users/registrasi";
   static const String login = "users/login";
   static const String updateProfile = "users/update_profile";
+  static const String resetPassword = "users/reset_password";
 
   static const String getPuskesmasByKota = "puskesmas/puskesmas_kab";
   static const String getListPuskesmasBylongLat = "puskesmas/terdekat";

@@ -276,4 +276,14 @@ class RegistrasiApi {
     );
     return res;
   }
+
+  Future<NetworkResponse> postResetPasssword(email) async {
+    final res = await _postRequest(
+      path: Endpoint.resetPassword,
+      body: {
+        "user_email": email,
+      },
+    );
+    return res;
+  }
 }

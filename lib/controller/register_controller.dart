@@ -11,6 +11,7 @@ import 'package:sinden_tb_app/model/register/getkelurahan_model.dart';
 import 'package:sinden_tb_app/model/register/getprovinsi_model.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/model/register/postregister_model.dart';
+import 'package:sinden_tb_app/model/register/postresetpassword_model.dart';
 import 'package:sinden_tb_app/model/register/postupdateprofile_model.dart';
 import 'package:sinden_tb_app/network/register_api.dart';
 
@@ -23,6 +24,7 @@ class RegisterController extends GetxController {
   PostRegister? postRegister;
   PostLogin? postLogin;
   PostUpdateProfile? postUpdateProfile;
+  PostResetPass? postResetPass;
 
   final api = RegistrasiApi();
 
@@ -141,6 +143,15 @@ class RegisterController extends GetxController {
     final res = await api.postUpdateProfile(payload);
     if (res.status == Status.success) {
       postLogin = PostLogin.fromJson(res.data!);
+    }
+  }
+
+  postReset(email) async {
+    postResetPass = null;
+    update();
+    final res = await api.postResetPasssword(email);
+    if (res.status == Status.success) {
+      postResetPass = PostResetPass.fromJson(res.data!);
     }
   }
 }

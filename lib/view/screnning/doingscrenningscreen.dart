@@ -205,10 +205,6 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 18.h,
-                                    ),
-                                    Text("Soal ${indexx + 1}"),
                                     // SizedBox(
                                     //   height: 18.h,
                                     // ),
@@ -230,7 +226,7 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
                                     Text(
                                       "${indexx + 1}. ${skriningController.getSoalSkrining!.data![indexx].question}",
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 26,
                                         fontWeight: FontWeight.w400,
                                         color: AppColor.brown,
                                       ),
