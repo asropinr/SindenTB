@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
+import 'package:sinden_tb_app/helper/bottom_sheet.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/view/screnning/resultscreen.dart';
 
@@ -22,6 +23,7 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
   TabController? controller;
   List<String> questionId = [];
   List<String> answer = [];
+  List tidakDijawab = [];
 
   //String? isSelected;
 
@@ -51,6 +53,12 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
     }
   }
 
+  chekingData() {
+    tidakDijawab.clear();
+    tidakDijawab.addAll(skriningController.getSoalSkrining!.data!
+        .where((element) => element.jawaban == "X"));
+  }
+
   postJawaban() async {
     setState(() {
       isLoading = true;
@@ -62,6 +70,20 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
     setState(() {
       isLoading = false;
     });
+  }
+
+  showBottomError(String message) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(16.w),
+            topLeft: Radius.circular(16.w),
+          ),
+        ),
+        context: context,
+        builder: (context) => BottomSheetCard(
+            image: "assets/ic_error_state.png", message: message));
   }
 
   @override
@@ -454,11 +476,20 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
                                 skriningController
                                         .getSoalSkrining!.data!.length -
                                     1) {
-                              await postJawaban();
-                              if (skriningController
-                                      .postJawabanSkrining!.status ==
-                                  1) {
-                                Get.to(ResultScreen());
+                              await chekingData();
+                              if (tidakDijawab.isEmpty) {
+                                await postJawaban();
+                                if (skriningController
+                                        .postJawabanSkrining!.status ==
+                                    1) {
+                                  Get.to(ResultScreen());
+                                } else {
+                                  showBottomError(skriningController
+                                      .postJawabanSkrining!.message!);
+                                }
+                              } else {
+                                showBottomError(
+                                    "Periksa Semua Jawaban Kamu Pastikan Sudah Menjawab Semua Pertanyaan Sebelum Submit");
                               }
                             } else {
                               controller!.animateTo(controller!.index + 1);

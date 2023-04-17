@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:map_launcher/map_launcher.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
-import 'package:sinden_tb_app/controller/register_controller.dart';
 
 class PuskesmasListScreen extends StatefulWidget {
   final String long;
@@ -37,7 +34,7 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
     // TODO: implement initState
     super.initState();
     getData();
-    print(widget.lat + widget.long);
+    //print(widget.lat + widget.long);
   }
 
   @override
@@ -90,18 +87,16 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
                         artikelController.getListPuskesmaslonglat!.data!.length,
                         (index) => InkWell(
                           onTap: () {
-                            MapLauncher.showMarker(
-                                mapType: MapType.google,
-                                coords: Coords(
-                                    double.parse(artikelController
-                                        .getListPuskesmaslonglat!
-                                        .data![index]
-                                        .latitude!),
-                                    double.parse(artikelController
-                                        .getListPuskesmaslonglat!
-                                        .data![index]
-                                        .longitude!)),
-                                title: "Maps");
+                            MapsLauncher.launchCoordinates(
+                              double.parse(artikelController
+                                  .getListPuskesmaslonglat!
+                                  .data![index]
+                                  .latitude!),
+                              double.parse(artikelController
+                                  .getListPuskesmaslonglat!
+                                  .data![index]
+                                  .longitude!),
+                            );
                           },
                           child: Container(
                             width: 160.w,
@@ -129,9 +124,8 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(2.w),
-                                      child: Image.network(
-                                        "https://s3-alpha-sig.figma.com/img/25c5/99cf/4c10804966693dc5845fa163ffddc39e?Expires=1681689600&Signature=gUAbrp-zJB4ugyCcE8D6FHl20YXjFX7YxgMiIHnOWmXX7dkO0U8oIBxdZsQAsgUVDCEroJ8VmVbvzSewVM~jgIUu8SladM3cr74nNzKKs7RQ4Ln2S-8yNGgQ3k2m2y8VUaxkYzKOKx6U71OjPSXdE8m1IzCNchvkZpUTEivn3r5mMjnwTbYd9yn~ZT4Y4Xc7yFGMr~IGdA8HhpODJn3qXAFb0hUI9Whq4vVz3EiV6iw8sMLpfjaqPnO04RAhoevs9VAjGhibQXcOff~mNGhbGv1kSnbg7r8BWt8hs-ok7QL7Bvlm4G3nOcbjAFMNt7ktFufugBrmPZmPp7PB50DQcw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-                                        //height: 120.h,
+                                      child: Image.asset(
+                                        "assets/bg_gambar_puskesmas.png",
                                       ),
                                     ),
                                     Positioned(

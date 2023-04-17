@@ -5,6 +5,7 @@ import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/constan/shimmer.dart';
 import 'package:sinden_tb_app/controller/register_controller.dart';
+import 'package:sinden_tb_app/helper/bottom_sheet.dart';
 import 'package:sinden_tb_app/view/auth/registrasiscreen.dart';
 import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
@@ -69,12 +70,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 32.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 36.w),
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
                 child: const Text(
-                  "Pelajari bagaimana cara mencegah dan mengobati tuberkulosis dengan tepat",
+                  "Deteksi dini resiko penularan tuberkulosis",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 6.h,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                child: const Text(
+                  "Dikembangkan oleh Pusat Riset Kesehatan Masyarakat dan Gizi - Badan riset dan inovasi nasional",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -143,6 +158,18 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
   bool isEmail = false;
   bool isPassword = false;
   bool isLoading = false;
+  bool enable = false;
+
+  validation() async {
+    if (widget.registerController.emailLogin.text.isNotEmpty &&
+        widget.registerController.passwordLogin.text.isNotEmpty) {
+      setState(() {
+        enable = true;
+      });
+    } else {
+      enable = false;
+    }
+  }
 
   postLogin() async {
     setState(() {
@@ -154,6 +181,22 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  showBottomError() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(16.w),
+            topLeft: Radius.circular(16.w),
+          ),
+        ),
+        context: context,
+        builder: (context) => BottomSheetCard(
+              image: "assets/ic_error_state.png",
+              message: widget.registerController.postLogin!.message!,
+            ));
   }
 
   @override
@@ -232,6 +275,7 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
               ),
               onChanged: (val) {
                 widget.registerController.emailLogin.text = val;
+                validation();
               },
             ),
           ),
@@ -271,6 +315,7 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
               ),
               onChanged: (val) {
                 widget.registerController.passwordLogin.text = val;
+                validation();
               },
             ),
           ),
@@ -310,21 +355,25 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
               );
             } else {
               return InkWell(
-                onTap: () async {
-                  await postLogin();
-                  if (widget.registerController.postLogin!.status != 0) {
-                    await Prefence().setStatusLogin();
-                    await Prefence()
-                        .saveDataLogin(widget.registerController.postLogin!);
-                    Get.to(BottomNavBarScreen());
-                  }
-                },
+                onTap: enable == false
+                    ? () {}
+                    : () async {
+                        await postLogin();
+                        if (widget.registerController.postLogin!.status != 0) {
+                          await Prefence().setStatusLogin();
+                          await Prefence().saveDataLogin(
+                              widget.registerController.postLogin!);
+                          Get.to(BottomNavBarScreen());
+                        } else {
+                          showBottomError();
+                        }
+                      },
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 45),
                   padding:
                       EdgeInsets.symmetric(horizontal: 32.w, vertical: 18.h),
                   decoration: BoxDecoration(
-                    color: AppColor.green,
+                    color: enable == false ? AppColor.grey800 : AppColor.green,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Row(

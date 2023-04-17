@@ -66,8 +66,15 @@ class _SettingScreenState extends State<SettingScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.w),
                     child: Image.network(
-                      "https://s3-alpha-sig.figma.com/img/f4a9/63f6/b947fa16066e80d394148280cc805278?Expires=1681689600&Signature=RPbKsDxuOQk1PVJS~8GBqlZQnFEEixKW1184jeLr0iDnV78hkfaeYgme0xvkeXRA4sSmxnsCJ5KLWIERPl8PHMsHT3L92gi2TtxBgBm7-cf3wnYFx4tC-tfZl~EBq~djuXD1qNuYlBkIrB2KUo6d4aJYg5Xy4EZhY4rhixknWKEUKbf5WShTWqMTQ-uQkxCQ3bNPIQFocbW~W-hDKKqJL7BNEa5K81Q42Drzlpt9D1X245yOq8qCDZhxSWjcjvYaLPwadWEn5NDUi4q1LN5KTMhXJjIrixU4W-qmR5w7rF-5mYUYAmCn5RqJn1LMIPnezxI1~aNH9voZ4MDXiEXQRw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
+                      postLogin!.data!.userFoto!,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, url, error) => ClipRRect(
+                        borderRadius: BorderRadius.circular(14.w),
+                        child: Image.asset(
+                          "assets/user_image.png",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),

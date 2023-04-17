@@ -69,16 +69,18 @@ class _ListArtikelScreenState extends State<ListArtikelScreen> {
                   ),
                   child: Row(
                     children: [
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(4.w),
-                      //   child: SizedBox(
-                      //     height: 80.h,
-                      //     child: Image.network(
-                      //       artikelController
-                      //           .getArtikel!.data![index].bannerImage!,
-                      //     ),
-                      //   ),
-                      // ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4.w),
+                        child: SizedBox(
+                          height: 80.h,
+                          width: 150.w,
+                          child: Image.network(
+                            artikelController
+                                .getArtikel!.data![index].bannerImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         width: 16.w,
                       ),

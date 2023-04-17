@@ -119,6 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Image.network(
                         postLogin!.data!.userFoto!,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, url, error) => ClipRRect(
+                          borderRadius: BorderRadius.circular(14.w),
+                          child: Image.asset(
+                            "assets/user_image.png",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -188,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           const Text(
-                            "Penyakit TB",
+                            "TB",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -201,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             width: 190.w,
                             child: const Text(
-                              "Mengetahui Tanda dan Gejala Penyakit TBC untuk Diagnosis yang Tepat",
+                              "Skrining mandiri deteksi dini penyakit tuberkulosis",
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -340,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             width: 190.w,
                             child: const Text(
-                              "Temukan Puskesmas Terdekat di Kota Anda dan Layanan Kesehatan yang Tersedia",
+                              "Temukan puskesmas terdekat di kota Anda",
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,

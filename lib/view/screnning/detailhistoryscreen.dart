@@ -99,7 +99,7 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                             ),
                           ),
                           Image.asset(
-                            "assets/logo.png",
+                            "assets/ic_iicSinden.png",
                             height: 70.h,
                           ),
                         ],
@@ -125,27 +125,36 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColor.green,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(4.w),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.green.withOpacity(0.2),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
+                              border: Border.all(
+                                  color: setTextColor(skriningController
+                                      .getDetailHistory!.data!.resultTextColor),
+                                  width: 5),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Status Hasil : ${skriningController.getDetailHistory!.data!.statusResponden!.toUpperCase()}",
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColor.brown),
+                                  textAlign: TextAlign.justify,
+                                ),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                Text(
+                                  skriningController
+                                      .getDetailHistory!.data!.resultText!,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColor.brown),
+                                  textAlign: TextAlign.justify,
                                 ),
                               ],
-                            ),
-                            child: Text(
-                              skriningController
-                                  .getDetailHistory!.data!.resultText!,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: setTextColor(skriningController
-                                      .getDetailHistory!
-                                      .data!
-                                      .resultTextColor)),
-                              textAlign: TextAlign.justify,
                             ),
                           ),
                         ],

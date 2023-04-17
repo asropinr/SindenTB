@@ -73,27 +73,38 @@ class _ResultScreenState extends State<ResultScreen> {
                       height: 14.h,
                     ),
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColor.green,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(4.w),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.green.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        skriningController
-                            .postJawabanSkrining!.data!.resultText!,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                        border: Border.all(
+                            width: 5,
                             color: setTextColor(skriningController
                                 .postJawabanSkrining!.data!.resultTextColor)),
-                        textAlign: TextAlign.justify,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Status Hasil : ${skriningController.postJawabanSkrining!.data!.statusResponden!.toUpperCase()}",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.brown),
+                            textAlign: TextAlign.justify,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Text(
+                            skriningController
+                                .postJawabanSkrining!.data!.resultText!,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.brown),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -145,12 +156,12 @@ class _ResultScreenState extends State<ResultScreen> {
 
   setTextColor(color) {
     if (color == "merah") {
-      return Colors.red;
+      return AppColor.redWhite;
     } else if (color == "kuning") {
       //return const Color(0XFFF9F9C5);
-      return const Color(0XFFF37878);
+      return AppColor.yellowWhite;
     } else {
-      return Colors.green;
+      return AppColor.greenWhite;
     }
   }
 }
