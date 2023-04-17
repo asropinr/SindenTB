@@ -213,40 +213,40 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    margin: EdgeInsets.symmetric(horizontal: 22.w),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: AppColor.grey500))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              "assets/ic_tandc.png",
-                              height: 20.h,
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            const Text(
-                              "Syarat dan Ketentuan",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppColor.brown,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                        Image.asset(
-                          "assets/ic_forw.png",
-                          height: 20.h,
-                        )
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   padding: EdgeInsets.symmetric(vertical: 12.h),
+                  //   margin: EdgeInsets.symmetric(horizontal: 22.w),
+                  //   decoration: const BoxDecoration(
+                  //       border: Border(
+                  //           bottom: BorderSide(color: AppColor.grey500))),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Row(
+                  //         children: [
+                  //           Image.asset(
+                  //             "assets/ic_tandc.png",
+                  //             height: 20.h,
+                  //           ),
+                  //           SizedBox(
+                  //             width: 20.w,
+                  //           ),
+                  //           const Text(
+                  //             "Syarat dan Ketentuan",
+                  //             style: TextStyle(
+                  //                 fontSize: 16,
+                  //                 color: AppColor.brown,
+                  //                 fontWeight: FontWeight.w400),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       Image.asset(
+                  //         "assets/ic_forw.png",
+                  //         height: 20.h,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
