@@ -200,20 +200,20 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
             ));
   }
 
-  showResetPassword() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(16.w),
-            topLeft: Radius.circular(16.w),
-          ),
-        ),
-        context: context,
-        builder: (context) => BottoSheetMasukkanPassword(
-              registerController: widget.registerController,
-            ));
-  }
+  // showResetPassword() {
+  //   showModalBottomSheet(
+  //       isScrollControlled: true,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.only(
+  //           topRight: Radius.circular(16.w),
+  //           topLeft: Radius.circular(16.w),
+  //         ),
+  //       ),
+  //       context: context,
+  //       builder: (context) => BottoSheetMasukkanPassword(
+  //             registerController: widget.registerController,
+  //           ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -364,8 +364,8 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
           ),
           InkWell(
             onTap: () {
-              showResetPassword();
-              Get.back();
+              Get.dialog(BottoSheetMasukkanPassword(
+                  registerController: widget.registerController));
             },
             child: RichText(
               text: const TextSpan(
@@ -487,126 +487,127 @@ class _BottoSheetMasukkanPasswordState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).viewInsets.bottom != 0
-          ? MediaQuery.of(context).size.height * 0.5
-          : 450.h,
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 16.h),
-            height: 4.h,
-            width: 50.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: const Color(0XFFE8E8E8),
+    return Dialog(
+      child: SizedBox(
+        height: 300.h,
+        child: Column(
+          children: [
+            // Container(
+            //   margin: EdgeInsets.only(top: 16.h),
+            //   height: 4.h,
+            //   width: 50.w,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(50),
+            //     color: const Color(0XFFE8E8E8),
+            //   ),
+            // ),
+            SizedBox(
+              height: 20.h,
             ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          const Text(
-            "Masukkan Email Terdaftar",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 45.w),
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-              border: Border.all(
-                color: AppColor.grey800,
+            const Text(
+              "Masukkan Email Terdaftar",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            child: TextField(
-              decoration: InputDecoration(
-                disabledBorder: InputBorder.none,
-                border: InputBorder.none,
-                hintText: "Alamat Email",
-                hintStyle: const TextStyle(
-                  color: Color(0XFFE8E8E8),
-                  fontSize: 12,
-                ),
-                prefixIcon: Image.asset(
-                  "assets/ic_email.png",
+            SizedBox(
+              height: 40.h,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 45.w),
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+                border: Border.all(
                   color: AppColor.grey800,
                 ),
               ),
-              onChanged: (val) {
-                resetPassword.text = val;
-                validation();
-              },
-            ),
-          ),
-          SizedBox(
-            height: 32.h,
-          ),
-          Builder(builder: (_) {
-            if (isLoading == true) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.w),
-                child:
-                    ShimmerHome(h: 60.h, w: MediaQuery.of(context).size.width),
-              );
-            } else {
-              return InkWell(
-                onTap: enable == false
-                    ? () {}
-                    : () async {
-                        await postReset();
-                        if (widget.registerController.postResetPass!.status ==
-                            0) {
-                          Get.dialog(DialogError(
-                            title: "Gagal Reset",
-                            message: widget
-                                .registerController.postResetPass!.message!,
-                          ));
-                        } else {
-                          Get.dialog(DialogError(
-                            title: "Sukses Reset",
-                            message: widget
-                                .registerController.postResetPass!.message!,
-                          ));
-                          Get.back();
-                        }
-                      },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 45),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 32.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                    color: enable == false ? AppColor.grey800 : AppColor.green,
-                    borderRadius: BorderRadius.circular(100),
+              child: TextField(
+                decoration: InputDecoration(
+                  disabledBorder: InputBorder.none,
+                  border: InputBorder.none,
+                  hintText: "Alamat Email",
+                  hintStyle: const TextStyle(
+                    color: Color(0XFFE8E8E8),
+                    fontSize: 12,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Reset",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Image.asset(
-                        "assets/ic_forward_arrow.png",
-                        height: 14.h,
-                      )
-                    ],
+                  prefixIcon: Image.asset(
+                    "assets/ic_email.png",
+                    color: AppColor.grey800,
                   ),
                 ),
-              );
-            }
-          })
-        ],
+                onChanged: (val) {
+                  resetPassword.text = val;
+                  validation();
+                },
+              ),
+            ),
+            SizedBox(
+              height: 32.h,
+            ),
+            Builder(builder: (_) {
+              if (isLoading == true) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
+                  child: ShimmerHome(
+                      h: 60.h, w: MediaQuery.of(context).size.width),
+                );
+              } else {
+                return InkWell(
+                  onTap: enable == false
+                      ? () {}
+                      : () async {
+                          await postReset();
+                          if (widget.registerController.postResetPass!.status ==
+                              0) {
+                            Get.dialog(DialogError(
+                              title: "Gagal Reset",
+                              message: widget
+                                  .registerController.postResetPass!.message!,
+                            ));
+                          } else {
+                            Get.dialog(DialogError(
+                              title: "Sukses Reset",
+                              message: widget
+                                  .registerController.postResetPass!.message!,
+                            ));
+                            Get.back();
+                          }
+                        },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 45),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 32.w, vertical: 18.h),
+                    decoration: BoxDecoration(
+                      color:
+                          enable == false ? AppColor.grey800 : AppColor.green,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Reset",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Image.asset(
+                          "assets/ic_forward_arrow.png",
+                          height: 14.h,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
+            })
+          ],
+        ),
       ),
     );
   }
