@@ -365,6 +365,7 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
           InkWell(
             onTap: () {
               showResetPassword();
+              Get.back();
             },
             child: RichText(
               text: const TextSpan(

@@ -427,6 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       margin: EdgeInsets.only(
                         left: index == 0 ? 32 : 8,
+                        right: index == 0 ? 0 : 32,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

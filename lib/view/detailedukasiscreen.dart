@@ -116,7 +116,7 @@ class _DetailEdukasiTBScreenState extends State<DetailEdukasiTBScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
-                      4,
+                      artikelController.getArtikel!.data!.length,
                       (index) => InkWell(
                         onTap: () {
                           Get.to(DetailArtikelScreen(
