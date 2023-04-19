@@ -80,6 +80,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (skriningController.getHistory!.data!.isEmpty) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/ic_no_data.png",
+                    height: 280.h,
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  const Text(
+                    "Belum Ada Data History. Silahkan Melakukan Skrining Terlebih Dahulu",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.brown,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            );
           } else {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 32.w),
