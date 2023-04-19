@@ -1,5 +1,5 @@
 class Endpoint {
-  static const String baseUrl = "https://demo.camudatera.com/sindentbapi/";
+  static const String baseUrl = "https://api.sindentb.com/";
   static const String apiKey =
       "Jx556670l7cDeI39ICC6FO1CeJ0UssS6JQyJrImtE0ByAL7pNJBL0Phi8znEk20nXAmpxcK";
 
