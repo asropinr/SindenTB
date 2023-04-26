@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
 import 'package:sinden_tb_app/view/bottomnavbar.dart';
+import 'package:sinden_tb_app/view/puskesmas/puskesmasscreen.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
@@ -34,7 +35,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     color: AppColor.brown),
               ),
               SizedBox(
-                height: 70.h,
+                height: 30.h,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -45,13 +46,13 @@ class _ResultScreenState extends State<ResultScreen> {
                       child: Image.network(
                         skriningController
                             .postJawabanSkrining!.data!.resultImage!,
-                        height: 240.h,
+                        height: 120.h,
                       ),
                     ),
-                    Image.asset(
-                      "assets/ic_iicSinden.png",
-                      height: 70.h,
-                    ),
+                    // Image.asset(
+                    //   "assets/ic_iicSinden.png",
+                    //   height: 70.h,
+                    // ),
                   ],
                 ),
               ),
@@ -63,52 +64,85 @@ class _ResultScreenState extends State<ResultScreen> {
                 child: Column(
                   children: [
                     const Text(
-                      "Hasil Pemeriksaan Kamu",
+                      "Hasil Skrining Mandiri Gejala Kamu Adalah :",
                       style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.brown),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.brown,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(
                       height: 14.h,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4.w),
-                        border: Border.all(
-                            width: 5,
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 30.h),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
                             color: setTextColor(skriningController
-                                .postJawabanSkrining!.data!.resultTextColor)),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Status Hasil : ${skriningController.postJawabanSkrining!.data!.statusResponden!.toUpperCase()}",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.brown),
-                            textAlign: TextAlign.justify,
+                                .postJawabanSkrining!.data!.resultTextColor),
+                            borderRadius: BorderRadius.circular(4.w),
                           ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Text(
+                          child: Text(
                             skriningController
-                                .postJawabanSkrining!.data!.resultText!,
+                                .postJawabanSkrining!.data!.statusResponden!
+                                .toUpperCase(),
                             style: const TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.brown),
-                            textAlign: TextAlign.justify,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
                           ),
-                        ],
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        Text(
+                          skriningController
+                              .postJawabanSkrining!.data!.resultText!,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColor.brown),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.to(PuskesmasListScreen());
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4.w),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColor.green.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          "Lihat Puskesmas Terdekatmu",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.green),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     SizedBox(
-                      height: 130.h,
+                      height: 60.h,
                     ),
                     InkWell(
                       onTap: () {

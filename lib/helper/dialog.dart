@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 
 class DialogError extends StatefulWidget {
   final String title;
   final String message;
+  final bool? puskesmas;
   const DialogError({
     Key? key,
     required this.title,
     required this.message,
+    this.puskesmas,
   }) : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class _DialogErrorState extends State<DialogError> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        height: 210,
+        height: 250.h,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 40),
         child: Column(
           children: [
@@ -49,7 +52,12 @@ class _DialogErrorState extends State<DialogError> {
             ),
             GestureDetector(
               onTap: () {
-                Get.back();
+                if (widget.puskesmas == true) {
+                  Get.back();
+                  Get.back();
+                } else {
+                  Get.back();
+                }
               },
               child: Container(
                 color: AppColor.green,

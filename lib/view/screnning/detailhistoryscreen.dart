@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
+import 'package:sinden_tb_app/view/puskesmas/puskesmasscreen.dart';
 
 class DetailHistoryScreen extends StatefulWidget {
   final String idUser;
@@ -43,32 +44,33 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.accentGreen,
+      appBar: AppBar(
         backgroundColor: AppColor.accentGreen,
-        appBar: AppBar(
-          backgroundColor: AppColor.accentGreen,
-          elevation: 0,
-          title: const Text(
-            "Detail History Skrining",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppColor.brown,
-            ),
+        elevation: 0,
+        title: const Text(
+          "Detail History Skrining",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: AppColor.brown,
           ),
-          centerTitle: true,
-          leading: InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: 32.w),
-              child: Image.asset(
-                "assets/ic_back_arrow.png",
-              ),
+        ),
+        centerTitle: true,
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: 32.w),
+            child: Image.asset(
+              "assets/ic_back_arrow.png",
             ),
           ),
         ),
-        body: Builder(builder: (_) {
+      ),
+      body: Builder(
+        builder: (_) {
           if (isloading) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -95,13 +97,13 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                             child: Image.network(
                               skriningController
                                   .getDetailHistory!.data!.resultImage!,
-                              height: 240.h,
+                              height: 120.h,
                             ),
                           ),
-                          Image.asset(
-                            "assets/ic_iicSinden.png",
-                            height: 70.h,
-                          ),
+                          // Image.asset(
+                          //   "assets/ic_iicSinden.png",
+                          //   height: 70.h,
+                          // ),
                         ],
                       ),
                     ),
@@ -157,6 +159,37 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.to(PuskesmasListScreen());
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4.w),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.green.withOpacity(0.2),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 0),
+                                  ),
+                                ],
+                              ),
+                              child: const Text(
+                                "Lihat Puskesmas Terdekatmu",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.green),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -165,7 +198,9 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
               ],
             );
           }
-        }));
+        },
+      ),
+    );
   }
 
   setTextColor(color) {

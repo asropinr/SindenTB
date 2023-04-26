@@ -27,9 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ArtikelController artikelController = Get.put(ArtikelController());
   PostLogin? postLogin;
   bool isLoading = true;
-  Position? _position;
-  String? lat;
-  String? long;
 
   Future getData() async {
     postLogin = await Prefence().getDataLogin();
@@ -49,38 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  getLocation() async {
-    Position position = await _determinePosition();
-    setState(() {
-      _position = position;
-      lat = _position!.latitude.toString();
-      long = _position!.longitude.toString();
-    });
-  }
-
-  Future<Position> _determinePosition() async {
-    LocationPermission permission;
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        //return Future.error('Location Permissions are denied');
-        openAppSettings();
-      }
-    }
-
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDataArtikel();
-    getLocation();
   }
 
   @override
@@ -300,10 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             InkWell(
               onTap: () {
-                Get.to(PuskesmasListScreen(
-                  long: long!,
-                  lat: lat!,
-                ));
+                Get.to(PuskesmasListScreen());
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,

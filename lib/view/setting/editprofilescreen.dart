@@ -914,7 +914,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 decoration: const InputDecoration(
                                   disabledBorder: InputBorder.none,
                                   border: InputBorder.none,
-                                  hintText: "Masukkan Alamat Puskesmas",
+                                  hintText: "Masukkan Puskesmas",
                                   hintStyle: TextStyle(
                                     color: AppColor.grey800,
                                     fontSize: 12,

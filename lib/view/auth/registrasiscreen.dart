@@ -928,7 +928,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                     decoration: const InputDecoration(
                                       disabledBorder: InputBorder.none,
                                       border: InputBorder.none,
-                                      hintText: "Masukkan Alamat Puskesmas",
+                                      hintText: "Masukkan Puskesmas",
                                       hintStyle: TextStyle(
                                         color: AppColor.grey800,
                                         fontSize: 12,

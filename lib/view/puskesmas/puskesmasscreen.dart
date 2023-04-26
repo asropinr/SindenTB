@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
+import 'package:sinden_tb_app/helper/dialog.dart';
 
 class PuskesmasListScreen extends StatefulWidget {
-  final String long;
-  final String lat;
   const PuskesmasListScreen({
     Key? key,
-    required this.long,
-    required this.lat,
   }) : super(key: key);
 
   @override
@@ -21,20 +20,58 @@ class PuskesmasListScreen extends StatefulWidget {
 class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
   ArtikelController artikelController = Get.find<ArtikelController>();
   bool isLoading = true;
+  Position? _position;
+  String? lat;
+  String? long;
+  LocationPermission? permission;
 
   getData() async {
-    await artikelController.getListPusLongLat(widget.lat, widget.long);
+    await getLocation();
+    await artikelController.getListPusLongLat(lat!, long!);
     setState(() {
       isLoading = false;
     });
   }
 
+  getLocation() async {
+    Position position = await _determinePosition();
+    setState(() {
+      _position = position;
+      lat = _position!.latitude.toString();
+      long = _position!.longitude.toString();
+    });
+  }
+
+  Future<Position> _determinePosition() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        //return Future.error('Location Permissions are denied');
+        openAppSettings();
+        Get.dialog(
+            const DialogError(
+              title: "Peringatan",
+              message:
+                  "Aktifkan Permission lokasi kamu untuk membantu mendapatkan puskesmas terdekat",
+              puskesmas: true,
+            ),
+            barrierDismissible: false);
+      }
+    }
+
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     getData();
-    //print(widget.lat + widget.long);
   }
 
   @override

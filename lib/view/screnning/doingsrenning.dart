@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
 import 'package:sinden_tb_app/view/screnning/doingscrenningscreen.dart';
+import 'package:sinden_tb_app/view/screnning/perviewdatadiriscreen.dart';
 
 class DoingScreen extends StatefulWidget {
   const DoingScreen({
@@ -163,7 +164,7 @@ class _DoingScreenState extends State<DoingScreen> {
                         InkWell(
                           onTap: isChekced == true
                               ? () {
-                                  Get.to(DoingScrenningScrenn());
+                                  Get.to(PreviewDataDiriScreen());
                                 }
                               : () {},
                           child: Container(
