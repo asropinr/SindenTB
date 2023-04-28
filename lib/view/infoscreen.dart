@@ -24,47 +24,8 @@ class _InfoScreenState extends State<InfoScreen> {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                "assets/info_page1.png",
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).viewPadding.top,
-                  left: 32.w,
-                  right: 32.w,
-                ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                "assets/Information 4.png",
+                fit: BoxFit.fill,
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -108,47 +69,8 @@ class _InfoScreenState extends State<InfoScreen> {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                "assets/info_page2.png",
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).viewPadding.top,
-                  left: 32.w,
-                  right: 32.w,
-                ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                "assets/Information 5.png",
+                fit: BoxFit.fill,
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -213,47 +135,8 @@ class _InfoScreenState extends State<InfoScreen> {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                "assets/info_page3.png",
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).viewPadding.top,
-                  left: 32.w,
-                  right: 32.w,
-                ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      ),
-                      Container(
-                        height: 20.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: AppColor.brown,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                "assets/Information 6.png",
+                fit: BoxFit.fill,
               ),
               Padding(
                 padding: EdgeInsets.only(

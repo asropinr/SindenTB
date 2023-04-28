@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:sinden_tb_app/constan/endpoint.dart';
 import 'package:sinden_tb_app/helper/check_internet.dart';
 import 'package:sinden_tb_app/helper/logger_printer.dart';
 import 'package:sinden_tb_app/helper/network_response.dart';
+import 'package:dio/dio.dart' as dio;
 
 var _log = Logger(
   printer: SimpleLogPrinter("TO Api"),
@@ -182,13 +184,14 @@ class RegistrasiApi {
       }
 
       Get.snackbar(
-        "Terjadi Kesalahan",
+        "Terjadi Kesalahan1",
         "Silahkan ulangi beberapa saat lagi",
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.black,
         dismissDirection: DismissDirection.horizontal,
       );
+      print(e);
       return NetworkResponse.error();
     } catch (e) {
       Get.snackbar(
@@ -269,10 +272,42 @@ class RegistrasiApi {
     return res;
   }
 
-  Future<NetworkResponse> postUpdateProfile(payload) async {
+  Future<NetworkResponse> postUpdateProfile(
+      userName,
+      userEmail,
+      userPhone,
+      userAddres,
+      userUniversity,
+      dob,
+      idProv,
+      idKab,
+      idKec,
+      idKel,
+      foto,
+      puskesmas,
+      gender) async {
     final res = await _postRequest(
       path: Endpoint.updateProfile,
-      body: payload,
+      body: {
+        "user_name": userName,
+        "user_email": userEmail,
+        "user_phone": userPhone,
+        "user_address": userAddres,
+        "user_university": userUniversity,
+        "dob": DateFormat(
+          "y-m-d",
+        ).format(
+          dob,
+        ),
+        "u_provinsi_id": idProv,
+        "u_kabupaten_id": idKab,
+        "u_kecamatan_id": idKec,
+        "u_kelurahan_id": idKel,
+        "foto": await dio.MultipartFile.fromFile(foto,
+            filename: foto.split("/").last),
+        "user_puskesmas": puskesmas,
+        "gender": gender,
+      },
     );
     return res;
   }

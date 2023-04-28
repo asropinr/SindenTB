@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
 import 'package:sinden_tb_app/view/artikel/detailartikel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailEdukasiTBScreen extends StatefulWidget {
   const DetailEdukasiTBScreen({super.key});
@@ -93,6 +94,28 @@ class _DetailEdukasiTBScreenState extends State<DetailEdukasiTBScreen> {
                       ),
                       Html(
                         data: artikelController.getEdukasiTb!.data!.eduTbText!,
+                      ),
+                      const Text(
+                        "Sumber : ",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.brown,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await launchUrl(Uri.parse(
+                              "https://sindentb.com/blog/post/edukasi-tbpost0030.html"));
+                        },
+                        child: const Text(
+                          "https://sindentb.com/blog/post/edukasi-tbpost0030.html",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 16.h,

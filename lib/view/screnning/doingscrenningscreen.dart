@@ -120,7 +120,7 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
           backgroundColor: AppColor.accentGreen,
           elevation: 0,
           title: const Text(
-            "Screning",
+            "Skrining",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,

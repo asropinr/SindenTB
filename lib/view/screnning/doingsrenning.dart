@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
-import 'package:sinden_tb_app/view/screnning/doingscrenningscreen.dart';
 import 'package:sinden_tb_app/view/screnning/perviewdatadiriscreen.dart';
 
 class DoingScreen extends StatefulWidget {
@@ -164,7 +163,97 @@ class _DoingScreenState extends State<DoingScreen> {
                         InkWell(
                           onTap: isChekced == true
                               ? () {
-                                  Get.to(PreviewDataDiriScreen());
+                                  Get.dialog(
+                                      Dialog(
+                                        child: Container(
+                                          height: 350.h,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18, vertical: 40),
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                "Pengumuman",
+                                                style: TextStyle(
+                                                  fontFamily: "Calibri",
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                "Hasil yang di dapatkan adalah sebatas diagnosa dari pertanyaan yang diberikan. Untuk hasil yang lebih akurat mohon periksakan diri ke puskesmas terdekat atau ke dokter terkait",
+                                                style: TextStyle(
+                                                  fontFamily: "Calibri",
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.to(
+                                                      PreviewDataDiriScreen());
+                                                },
+                                                child: Container(
+                                                  color: AppColor.green,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 14,
+                                                    horizontal: 40,
+                                                  ),
+                                                  child: const Text(
+                                                    "Lanjutkan",
+                                                    style: TextStyle(
+                                                      fontFamily: "Calibri",
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.back();
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color:
+                                                              AppColor.green)),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 14,
+                                                    horizontal: 40,
+                                                  ),
+                                                  child: const Text(
+                                                    "Kembali",
+                                                    style: TextStyle(
+                                                      fontFamily: "Calibri",
+                                                      fontSize: 14,
+                                                      color: AppColor.green,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      barrierDismissible: false);
                                 }
                               : () {},
                           child: Container(

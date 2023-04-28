@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -116,12 +115,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  postUpdate(payload) async {
+  postUpdate() async {
     setState(() {
       isLoading = true;
     });
 
-    await registerController.postUpdate(payload);
+    await registerController.postUpdate();
 
     setState(() {
       isLoading = false;
@@ -205,7 +204,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      registerController.pathImage != null
+                      registerController.pathImage?.path != null
                           ? Stack(
                               children: [
                                 Container(
@@ -305,6 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 SizedBox(
                   height: 16.h,
                 ),
+                //Text(registerController.formData?.files.toString() ?? "no"),
                 _buildTextFieldItem(
                     itemTitle: "Alamat email",
                     hintText: "Masukkan alamat email",
@@ -914,7 +914,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 decoration: const InputDecoration(
                                   disabledBorder: InputBorder.none,
                                   border: InputBorder.none,
-                                  hintText: "Masukkan Puskesmas",
+                                  hintText: "Masukkan Alamat Puskesmas",
                                   hintStyle: TextStyle(
                                     color: AppColor.grey800,
                                     fontSize: 12,
@@ -936,32 +936,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 InkWell(
                   onTap: () async {
                     //Get.to(BottomNavBarScreen());
-                    if (registerController.pathImage == null) {
-                      photo = widget.postLogin.data!.userFoto;
-                    } else {
-                      photo = registerController.pathImage!.path;
-                    }
-                    payload = {
-                      "user_name": registerController.namaLengkap.text,
-                      "user_email": registerController.email.text,
-                      "user_phone": registerController.noWa.text,
-                      "user_address": registerController.alamatLengkap.text,
-                      "user_university": registerController.asalSekolah.text,
-                      "dob": DateFormat(
-                        "y-m-d",
-                      ).format(
-                        registerController.selectedDate!,
-                      ),
-                      "u_provinsi_id": registerController.idProv,
-                      "u_kabupaten_id": registerController.idKab,
-                      "u_kecamatan_id": registerController.idKec,
-                      "u_kelurahan_id": registerController.idKel,
-                      "foto": photo,
-                      "user_puskesmas": registerController.alamatPuskesmas.text,
-                      "gender": registerController.jenisKelamin,
-                    };
+                    // if (registerController.pathImage == null) {
+                    //   photo = widget.postLogin.data!.userFoto!;
+                    // } else {
+                    //   photo = registerController.pathImage!.path;
+                    // }
+                    // payload = {
+                    //   "user_name": registerController.namaLengkap.text,
+                    //   "user_email": registerController.email.text,
+                    //   "user_phone": registerController.noWa.text,
+                    //   "user_address": registerController.alamatLengkap.text,
+                    //   "user_university": registerController.asalSekolah.text,
+                    //   "dob": DateFormat(
+                    //     "y-m-d",
+                    //   ).format(
+                    //     registerController.selectedDate!,
+                    //   ),
+                    //   "u_provinsi_id": registerController.idProv,
+                    //   "u_kabupaten_id": registerController.idKab,
+                    //   "u_kecamatan_id": registerController.idKec,
+                    //   "u_kelurahan_id": registerController.idKel,
+                    //   "foto": await dio.MultipartFile.fromFile(
+                    //       registerController.pic!.path,
+                    //       filename:
+                    //           registerController.pic!.path.split("/").last),
+                    //   "user_puskesmas": registerController.alamatPuskesmas.text,
+                    //   "gender": registerController.jenisKelamin,
+                    // };
 
-                    await postUpdate(payload);
+                    await postUpdate();
                     if (registerController.postLogin!.status == 1) {
                       await Prefence()
                           .saveDataLogin(registerController.postLogin!);

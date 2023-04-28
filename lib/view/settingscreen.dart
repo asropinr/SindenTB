@@ -46,7 +46,7 @@ class _SettingScreenState extends State<SettingScreen> {
       } else {
         return ListView(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).viewPadding.top,
+            top: MediaQuery.of(context).viewPadding.top * 1.5,
             bottom: 50.h,
           ),
           children: [

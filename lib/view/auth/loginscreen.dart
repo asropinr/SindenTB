@@ -75,28 +75,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                   "Deteksi dini resiko penularan tuberkulosis",
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
-                height: 6.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 32.w),
-                child: const Text(
-                  "Dikembangkan oleh Pusat Riset Kesehatan Masyarakat dan Gizi - Badan riset dan inovasi nasional",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                height: 40.h,
               ),
               SizedBox(
-                height: 91.h,
+                height: 35.h,
               ),
               InkWell(
                 onTap: () {
@@ -401,9 +390,10 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
                     : () async {
                         await postLogin();
                         if (widget.registerController.postLogin!.status != 0) {
-                          await Prefence().setStatusLogin();
                           await Prefence().saveDataLogin(
                               widget.registerController.postLogin!);
+                          await Prefence().setStatusLogin();
+
                           Get.to(BottomNavBarScreen());
                         } else {
                           showBottomError();
@@ -420,6 +410,7 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      //https://demo.camudatera.com/sindentbapi/
                       const Text(
                         "Masuk",
                         style: TextStyle(

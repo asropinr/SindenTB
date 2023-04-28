@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,6 +53,7 @@ class RegisterController extends GetxController {
   TextEditingController passwordLogin = TextEditingController();
 
   XFile? pathImage;
+  File? pic;
 
   pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -60,7 +64,9 @@ class RegisterController extends GetxController {
       maxWidth: 500,
     );
     if (image != null) {
+      final file = File(image.path);
       pathImage = image;
+      pic = file;
 
       update();
     }
@@ -137,10 +143,23 @@ class RegisterController extends GetxController {
     }
   }
 
-  postUpdate(payload) async {
+  postUpdate() async {
     postLogin = null;
     update();
-    final res = await api.postUpdateProfile(payload);
+    final res = await api.postUpdateProfile(
+        namaLengkap.text,
+        email.text,
+        noWa.text,
+        alamatLengkap.text,
+        asalSekolah.text,
+        selectedDate,
+        idProv,
+        idKab,
+        idKec,
+        idKel,
+        pic!.path,
+        puskesmas,
+        jenisKelamin);
     if (res.status == Status.success) {
       postLogin = PostLogin.fromJson(res.data!);
     }

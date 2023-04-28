@@ -23,7 +23,7 @@ class _DialogErrorState extends State<DialogError> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        height: 250.h,
+        height: 300.h,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 40),
         child: Column(
           children: [

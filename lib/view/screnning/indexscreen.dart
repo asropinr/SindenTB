@@ -170,7 +170,7 @@ class _IndexScrenningScreenState extends State<IndexScrenningScreen> {
                             SizedBox(
                               width: 190.w,
                               child: const Text(
-                                "lihat Riwayat Hasil Screnning Kamu untuk Melakukan Pengecekan Ulang",
+                                "lihat Riwayat Hasil Skrining Kamu untuk Melakukan Pengecekan Ulang",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,

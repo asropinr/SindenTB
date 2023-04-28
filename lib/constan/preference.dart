@@ -39,6 +39,7 @@ class Prefence {
     final json = postLogin!.toJson();
     final dataLogin = jsonEncode(json);
     print("Simpan");
+    print("INI SIMPAN DATA LOGIN");
     print(dataLogin);
     await saveString(loginData, dataLogin);
   }

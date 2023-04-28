@@ -246,7 +246,7 @@ class _PreviewDataDiriScreenState extends State<PreviewDataDiriScreen> {
                       borderRadius: BorderRadius.circular(4.w),
                     ),
                     child: const Text(
-                      "Lanjut Skrinig",
+                      "Lanjut Skrining",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
