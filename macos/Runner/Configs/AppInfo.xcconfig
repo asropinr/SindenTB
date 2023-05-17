@@ -8,7 +8,7 @@
 PRODUCT_NAME = sinden_tb_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.sindenTB.sindentbapp
+PRODUCT_BUNDLE_IDENTIFIER = com.sindenTB.sindentbTB
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

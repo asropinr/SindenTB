@@ -362,7 +362,7 @@
 			<key>entitlements</key>
 			<dict>
 				<key>application-identifier</key>
-				<string>5438HN7N45.com.sindenTB.sindentbapp</string>
+				<string>5438HN7N45.com.sindenTB.sindentbTB</string>
 				<key>com.apple.developer.team-identifier</key>
 				<string>5438HN7N45</string>
 				<key>get-task-allow</key>
@@ -377,7 +377,7 @@
 				<key>dateExpires</key>
 				<string>06/01/24</string>
 				<key>name</key>
-				<string>iOS Team Ad Hoc Provisioning Profile: com.sindenTB.sindentbapp</string>
+				<string>iOS Team Ad Hoc Provisioning Profile: com.sindenTB.sindentbTB</string>
 			</dict>
 			<key>team</key>
 			<dict>
