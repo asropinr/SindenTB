@@ -303,8 +303,9 @@ class RegistrasiApi {
         "u_kabupaten_id": idKab,
         "u_kecamatan_id": idKec,
         "u_kelurahan_id": idKel,
-        "foto": await dio.MultipartFile.fromFile(foto,
-            filename: foto.split("/").last),
+        if (foto != null)
+          "foto": await dio.MultipartFile.fromFile(foto,
+              filename: foto.split("/").last),
         "user_puskesmas": puskesmas,
         "gender": gender,
       },

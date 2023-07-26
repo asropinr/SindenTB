@@ -936,11 +936,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 InkWell(
                   onTap: () async {
                     //Get.to(BottomNavBarScreen());
-                    // if (registerController.pathImage == null) {
-                    //   photo = widget.postLogin.data!.userFoto!;
-                    // } else {
-                    //   photo = registerController.pathImage!.path;
-                    // }
+                    if (registerController.pathImage == null) {
+                      photo = widget.postLogin.data!.userFoto!;
+                    } else {
+                      photo = registerController.pathImage!.path;
+                    }
                     // payload = {
                     //   "user_name": registerController.namaLengkap.text,
                     //   "user_email": registerController.email.text,

@@ -157,8 +157,8 @@ class RegisterController extends GetxController {
         idKab,
         idKec,
         idKel,
-        pic!.path,
-        puskesmas,
+        pic?.path,
+        alamatPuskesmas.text,
         jenisKelamin);
     if (res.status == Status.success) {
       postLogin = PostLogin.fromJson(res.data!);

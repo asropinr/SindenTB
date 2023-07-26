@@ -75,40 +75,40 @@ class _ResultScreenState extends State<ResultScreen> {
                     SizedBox(
                       height: 14.h,
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 30.h),
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.w),
+                        border: Border.all(
                             color: setTextColor(skriningController
                                 .postJawabanSkrining!.data!.resultTextColor),
-                            borderRadius: BorderRadius.circular(4.w),
-                          ),
-                          child: Text(
-                            skriningController
-                                .postJawabanSkrining!.data!.statusResponden!
-                                .toUpperCase(),
+                            width: 5),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Status Hasil : ${skriningController.postJawabanSkrining!.data!.statusResponden!.toUpperCase()}",
                             style: const TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.brown),
+                            textAlign: TextAlign.justify,
                           ),
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        Text(
-                          skriningController
-                              .postJawabanSkrining!.data!.resultText!,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColor.brown),
-                          textAlign: TextAlign.justify,
-                        ),
-                      ],
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Text(
+                            skriningController
+                                .postJawabanSkrining!.data!.resultText!,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.brown),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
