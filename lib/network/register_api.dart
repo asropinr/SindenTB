@@ -295,7 +295,7 @@ class RegistrasiApi {
         "user_address": userAddres,
         "user_university": userUniversity,
         "dob": DateFormat(
-          "y-m-d",
+          "y-MM-d",
         ).format(
           dob,
         ),

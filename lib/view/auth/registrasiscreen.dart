@@ -970,7 +970,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                             "user_university":
                                 registerController.asalSekolah.text,
                             "dob": DateFormat(
-                              "y-m-d",
+                              "y-MM-d",
                             ).format(
                               registerController.selectedDate!,
                             ),

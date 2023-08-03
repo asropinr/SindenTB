@@ -7,6 +7,7 @@ import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/constan/shimmer.dart';
 import 'package:sinden_tb_app/controller/register_controller.dart';
+import 'package:sinden_tb_app/helper/dialog.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -92,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     await registerController
-        .getListKelurahan(widget.postLogin.data!.uKecamatanId!)
+        .getListKelurahan(registerController.idKec!)
         .then((value) {
       registerController.getKelurahan?.data?.forEach((element) {
         if (element.idKel == widget.postLogin.data!.uKelurahanId) {
@@ -936,11 +937,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 InkWell(
                   onTap: () async {
                     //Get.to(BottomNavBarScreen());
-                    if (registerController.pathImage == null) {
-                      photo = widget.postLogin.data!.userFoto!;
-                    } else {
-                      photo = registerController.pathImage!.path;
-                    }
+                    // if (registerController.pathImage == null) {
+                    //   photo = widget.postLogin.data!.userFoto!;
+                    // } else {
+                    //   photo = registerController.pathImage!.path;
+                    // }
                     // payload = {
                     //   "user_name": registerController.namaLengkap.text,
                     //   "user_email": registerController.email.text,
@@ -972,6 +973,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         registerController.pathImage = null;
                       });
                       Get.back();
+                    } else {
+                      Get.dialog(DialogError(
+                          title: "Register Gagal",
+                          message: registerController.postLogin!.message!));
                     }
                   },
                   child: Container(
