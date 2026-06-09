@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "484230153484",
+    "project_id": "sindentb-ddc2d",
+    "storage_bucket": "sindentb-ddc2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484230153484:android:0b8a5d6acce211b361f529",
+        "android_client_info": {
+          "package_name": "com.sindenTB.sinden_tb_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMbu9ovHFAIkqMhH3iaxeX-yQFyfYyD24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

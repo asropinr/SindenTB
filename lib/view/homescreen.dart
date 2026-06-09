@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
+import 'package:sinden_tb_app/controller/faq_controller.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/view/artikel/artikellistscreen.dart';
 import 'package:sinden_tb_app/view/artikel/detailartikel.dart';
@@ -25,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   ArtikelController artikelController = Get.put(ArtikelController());
+  FaqController faqController = Get.put(FaqController());
   PostLogin? postLogin;
   bool isLoading = true;
 
@@ -33,12 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  getDataArtikel() async {
+  Future<void> getDataArtikel() async {
+    if (artikelController.getArtikel != null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
 
     await getData();
+    await artikelController.getProfileUser();
     await artikelController.getListArtikel();
 
     setState(() {
@@ -48,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataArtikel();
   }
@@ -87,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14.w),
                       child: Image.network(
-                        postLogin!.data!.userFoto!,
+                        artikelController.getprofileuserModel!.data!.userFoto!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, url, error) => ClipRRect(
                           borderRadius: BorderRadius.circular(14.w),
@@ -118,7 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 4.h,
                         ),
                         Text(
-                          postLogin!.data!.userName!,
+                          artikelController
+                                  .getprofileuserModel!.data!.userName ??
+                              "No name",
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w300,
@@ -338,120 +347,139 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 32.h,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Artikel Terkait",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColor.brown,
+            if (artikelController.getArtikel!.data!.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Artikel Terkait",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: AppColor.brown,
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(ListArtikelScreen());
-                    },
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Lihat Semua",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.green,
+                    InkWell(
+                      onTap: () {
+                        Get.to(ListArtikelScreen());
+                      },
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Lihat Semua",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppColor.green,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Image.asset(
-                          "assets/ic_forward_arrow.png",
-                          color: AppColor.green,
-                          height: 10.h,
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Image.asset(
+                            "assets/ic_forward_arrow.png",
+                            color: AppColor.green,
+                            height: 10.h,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
             SizedBox(
               height: 16.h,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  artikelController.getArtikel!.data!.length,
-                  (index) => InkWell(
-                    onTap: () {
-                      Get.to(DetailArtikelScreen(
-                          data: artikelController.getArtikel!.data![index]));
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: index == 0 ? 32 : 8,
-                        right: index == 0 ? 0 : 32,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 150.h,
-                            width: 200.w,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.w),
-                              child: Image.network(
-                                artikelController
-                                    .getArtikel!.data![index].bannerImage!,
-                                fit: BoxFit.cover,
-                              ),
+            GetBuilder<ArtikelController>(
+              builder: (controller) {
+                if (controller.getArtikel!.data!.isEmpty) {
+                  return Center(
+                    child: Text("Belum Ada Data Artikel"),
+                  );
+                } else {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        artikelController.getArtikel!.data!.length,
+                        (index) => InkWell(
+                          onTap: () {
+                            Get.to(DetailArtikelScreen(
+                                data: artikelController
+                                    .getArtikel!.data![index]));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: index == 0 ? 32 : 8,
+                              right: index == 0 ? 0 : 32,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 150.h,
+                                  width: 200.w,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4.w),
+                                    child: Image.network(
+                                        artikelController.getArtikel!
+                                            .data![index].bannerImage!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, url, error) =>
+                                            Icon(
+                                              Icons.broken_image_outlined,
+                                              size: 100,
+                                            )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  DateFormat(
+                                    "dd MMMM y",
+                                  ).format(
+                                    DateTime.parse(artikelController
+                                        .getArtikel!.data![index].postDate!),
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColor.brown,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                SizedBox(
+                                  width: 200.w,
+                                  child: Text(
+                                    artikelController
+                                        .getArtikel!.data![index].blogTitle!,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColor.brown,
+                                    ),
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text(
-                            DateFormat(
-                              "dd MMMM y",
-                            ).format(
-                              DateTime.parse(artikelController
-                                  .getArtikel!.data![index].postDate!),
-                            ),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColor.brown,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          SizedBox(
-                            width: 200.w,
-                            child: Text(
-                              artikelController
-                                  .getArtikel!.data![index].blogTitle!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: AppColor.brown,
-                              ),
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  );
+                }
+              },
             ),
+            SizedBox(
+              height: 100,
+            )
           ],
         );
       }

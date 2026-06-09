@@ -11,15 +11,15 @@ class GetKabupaten {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -28,23 +28,24 @@ class GetKabupaten {
 }
 
 class Data {
-  String? idKab;
-  String? idProvFk;
-  String? namaKab;
-
-  Data({this.idKab, this.idProvFk, this.namaKab});
+  String? id;
+  String? provinceCode;
+  String? name;
+  String? code;
+  Data({this.id, this.provinceCode, this.name, this.code});
 
   Data.fromJson(Map<String, dynamic> json) {
-    idKab = json['id_kab'];
-    idProvFk = json['id_prov_fk'];
-    namaKab = json['nama_kab'];
+    id = json['id'];
+    provinceCode = json['province_code'];
+    name = json['name'];
+    code = json['code'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id_kab'] = idKab;
-    data['id_prov_fk'] = idProvFk;
-    data['nama_kab'] = namaKab;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['province_code'] = this.provinceCode;
+    data['code'] = this.code;
     return data;
   }
 }

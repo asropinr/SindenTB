@@ -28,7 +28,7 @@ class GetListPuskesmaslonglat {
 }
 
 class Data {
-  String? puskesmasId;
+  int? puskesmasId;
   String? nama;
   String? provinsi;
   String? kabupaten;

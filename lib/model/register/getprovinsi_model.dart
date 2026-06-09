@@ -11,15 +11,15 @@ class GetProvinsi {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -28,20 +28,26 @@ class GetProvinsi {
 }
 
 class Data {
-  String? idProv;
-  String? nama;
-
-  Data({this.idProv, this.nama});
+  String? id;
+  String? name;
+  String? code;
+  Data({
+    this.id,
+    this.name,
+    this.code,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
-    idProv = json['id_prov'];
-    nama = json['nama'];
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id_prov'] = idProv;
-    data['nama'] = nama;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['code'] = this.code;
     return data;
   }
 }

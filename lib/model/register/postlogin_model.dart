@@ -1,13 +1,15 @@
 class PostLogin {
   int? status;
   String? message;
+  String? token;
   Data? data;
 
-  PostLogin({this.status, this.message, this.data});
+  PostLogin({this.status, this.message, this.token, this.data});
 
   PostLogin.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    token = json['token'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -15,6 +17,7 @@ class PostLogin {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
+    data['token'] = token;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -23,7 +26,7 @@ class PostLogin {
 }
 
 class Data {
-  String? userId;
+  int? userId;
   String? userName;
   String? userPassword;
   String? userEmail;

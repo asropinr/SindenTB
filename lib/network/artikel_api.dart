@@ -5,20 +5,25 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sinden_tb_app/constan/endpoint.dart';
+import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/helper/check_internet.dart';
 import 'package:sinden_tb_app/helper/logger_printer.dart';
 import 'package:sinden_tb_app/helper/network_response.dart';
+import 'package:sinden_tb_app/view/auth/loginscreen.dart';
 
 var _log = Logger(
   printer: SimpleLogPrinter("TO Api"),
 );
 
 class ArtikelApi {
-  Dio _normal({int? timeout, String? token}) {
+  Future<Dio> _normal({int? timeout, String? token}) async {
     String uri = Endpoint.baseUrl;
 
     _log.d(uri);
+    final tokenn = await Prefence().getToken();
+    _log.d("INI TOKEN $tokenn");
     BaseOptions options = BaseOptions(
       baseUrl: uri,
       responseType: ResponseType.json,
@@ -27,6 +32,7 @@ class ArtikelApi {
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": Endpoint.apiKey,
+        if (tokenn != null) "Authorization": "Bearer $tokenn",
       },
 
       // ignore: missing_return
@@ -48,7 +54,7 @@ class ArtikelApi {
 
   Future<NetworkResponse> _getRequest(
       {required String path, params, timeout, token}) async {
-    final dio = _normal(timeout: timeout, token: token);
+    final dio = await _normal(timeout: timeout, token: token);
     try {
       final internet = await CheckInternetConnection.check();
       if (!internet) {
@@ -64,6 +70,13 @@ class ArtikelApi {
       }
 
       final res = await dio.get(path, queryParameters: params);
+      _log.d("RESPONSE CONTENT TYPE");
+      _log.d(
+        res.headers.value(
+          Headers.contentTypeHeader,
+        ),
+      );
+
       _log.d(res.statusCode);
       _log.d(res.data);
       _log.d(res.data is String);
@@ -90,8 +103,20 @@ class ArtikelApi {
         dismissDirection: DismissDirection.horizontal,
       );
       return NetworkResponse.internetError();
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.connectionTimeout) {
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        await sharedPreferences.clear();
+
+        Get.offAll(
+          () => const LoginScreen(),
+        );
+
+        return NetworkResponse.error();
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
         Get.snackbar(
           "Request Timeout",
           "Silahkan ulangi beberapa saat lagi",
@@ -103,14 +128,14 @@ class ArtikelApi {
         return NetworkResponse.timeout();
       }
 
-      Get.snackbar(
-        "Masalah Koneksi",
-        "Terjadi masalah pada koneksi internet.",
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.black,
-        dismissDirection: DismissDirection.horizontal,
-      );
+      // Get.snackbar(
+      //   "Masalah Koneksi",
+      //   "Terjadi masalah pada koneksi internet.",
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.black,
+      //   dismissDirection: DismissDirection.horizontal,
+      // );
       return NetworkResponse.internetError();
     } catch (e) {
       Get.snackbar(
@@ -151,6 +176,13 @@ class ArtikelApi {
   Future<NetworkResponse> getTentangKami() async {
     final res = await _getRequest(
       path: Endpoint.getTenatngKami,
+    );
+    return res;
+  }
+
+  Future<NetworkResponse> getProfileUser() async {
+    final res = await _getRequest(
+      path: Endpoint.profile,
     );
     return res;
   }

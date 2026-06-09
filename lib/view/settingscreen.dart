@@ -8,6 +8,7 @@ import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/view/auth/loginscreen.dart';
 import 'package:sinden_tb_app/view/setting/editprofilescreen.dart';
 import 'package:sinden_tb_app/view/setting/tentangkamiscreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({
@@ -110,6 +111,25 @@ class _SettingScreenState extends State<SettingScreen> {
                         color: AppColor.green,
                         fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final uri = Uri.parse("https://sindentb.com/hapus-akun");
+                      await launchUrl(
+                        uri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    child: const Text(
+                      "Hapus Akun",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: AppColor.redWhite,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -213,6 +233,42 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     height: 10.h,
                   ),
+                  GestureDetector(
+                    onTap: () async {
+                      SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                      await sharedPreferences.clear();
+                      Get.offAll(const LoginScreen());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 32.w),
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: AppColor.errorColor,
+                        borderRadius: BorderRadius.circular(100.w),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Keluar",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(
+                            width: 24.w,
+                          ),
+                          Image.asset(
+                            "assets/ic_logout.png",
+                            height: 15.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   // Container(
                   //   padding: EdgeInsets.symmetric(vertical: 12.h),
                   //   margin: EdgeInsets.symmetric(horizontal: 22.w),
@@ -251,43 +307,7 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             SizedBox(
-              height: 40.h,
-            ),
-            GestureDetector(
-              onTap: () async {
-                SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-                await sharedPreferences.clear();
-                Get.offAll(const LoginScreen());
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 32.w),
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: AppColor.errorColor,
-                  borderRadius: BorderRadius.circular(100.w),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Keluar",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      width: 24.w,
-                    ),
-                    Image.asset(
-                      "assets/ic_logout.png",
-                      height: 15.h,
-                    ),
-                  ],
-                ),
-              ),
+              height: 100,
             )
           ],
         );

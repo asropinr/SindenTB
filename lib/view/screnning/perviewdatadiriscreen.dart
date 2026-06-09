@@ -37,228 +37,235 @@ class _PreviewDataDiriScreenState extends State<PreviewDataDiriScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.accentGreen,
-      appBar: AppBar(
+    return SafeArea(
+      top: false,
+      child: Scaffold(
         backgroundColor: AppColor.accentGreen,
-        elevation: 0,
-        title: const Text(
-          "Preview Data Diri",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: AppColor.brown,
+        appBar: AppBar(
+          backgroundColor: AppColor.accentGreen,
+          elevation: 0,
+          title: const Text(
+            "Preview Data Diri",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: AppColor.brown,
+            ),
           ),
-        ),
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 32),
-            child: Image.asset(
-              "assets/ic_back_arrow.png",
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Image.asset(
+                "assets/ic_back_arrow.png",
+              ),
             ),
           ),
         ),
-      ),
-      body: Builder(
-        builder: (_) {
-          if (isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                const Text(
-                  "Berikut Preview Data Diri Kamu : ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+        body: Builder(
+          builder: (_) {
+            if (isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView(
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                children: [
+                  SizedBox(
+                    height: 20.h,
                   ),
-                ),
-                SizedBox(
-                  height: 18.h,
-                ),
-                Text(
-                  "Nama : ${postLogin!.data!.userName!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Tanggal Lahir : ${DateFormat(
-                    "dd MMMM y",
-                  ).format(
-                    DateTime.parse(postLogin!.data!.dob!),
-                  )}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Jenis Kelamin : ${postLogin!.data!.gender!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "No HP : ${postLogin!.data!.userPhone!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Asal Sekolah : ${postLogin!.data!.userUniversity!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Asal Provinsi : ${postLogin!.data!.uProvinsi!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Asal Kabupaten : ${postLogin!.data!.uKabupaten!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Asal Kecamatan : ${postLogin!.data!.uKecamatan!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Asal Kelurahan : ${postLogin!.data!.uKelurahan!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Alamat : ${postLogin!.data!.userAddress!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "Puskesmas : ${postLogin!.data!.userPuskesmas!}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 80.h,
-                ),
-                InkWell(
-                  onTap: () async {
-                    await Get.to(EditProfileScreen(
-                      postLogin: postLogin!,
-                    ));
-                    getData();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4.w),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColor.green.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: const Text(
-                      "Update Profile",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.green),
-                      textAlign: TextAlign.center,
+                  const Text(
+                    "Berikut Preview Data Diri Kamu : ",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.to(DoingScrenningScrenn());
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: AppColor.green,
-                      borderRadius: BorderRadius.circular(4.w),
-                    ),
-                    child: const Text(
-                      "Lanjut Skrining",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  Text(
+                    "Nama : ${postLogin!.data!.userName!}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-        },
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  if (postLogin!.data!.dob != null)
+                    Text(
+                      "Tanggal Lahir : ${DateFormat(
+                        "dd MMMM y",
+                      ).format(
+                        DateTime.parse(postLogin!.data!.dob!),
+                      )}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Jenis Kelamin : ${postLogin!.data!.gender ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "No HP : ${postLogin!.data!.userPhone ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Asal Sekolah : ${postLogin!.data!.userUniversity ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Asal Provinsi : ${postLogin!.data!.uProvinsi ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Asal Kabupaten : ${postLogin!.data!.uKabupaten ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Asal Kecamatan : ${postLogin!.data!.uKecamatan ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Asal Kelurahan : ${postLogin!.data!.uKelurahan ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Alamat : ${postLogin!.data!.userAddress ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Puskesmas : ${postLogin!.data!.userPuskesmas ?? "no data"}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      await Get.to(EditProfileScreen(
+                        postLogin: postLogin!,
+                      ));
+                      getData();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.w),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.green.withOpacity(0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: const Text(
+                        "Update Profile",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.green),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(DoingScrenningScrenn());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: AppColor.green,
+                        borderRadius: BorderRadius.circular(4.w),
+                      ),
+                      child: const Text(
+                        "Lanjut Skrining",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  )
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }

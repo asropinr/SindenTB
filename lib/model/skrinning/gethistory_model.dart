@@ -28,7 +28,7 @@ class GetHistory {
 }
 
 class Data {
-  String? skriningId;
+  int? skriningId;
   String? userFk;
   String? dateCreate;
   String? status;

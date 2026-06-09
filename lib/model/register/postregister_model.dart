@@ -23,7 +23,7 @@ class PostRegister {
 }
 
 class Data {
-  String? userId;
+  int? userId;
   String? userName;
   String? userPassword;
   String? userEmail;

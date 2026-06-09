@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:sinden_tb_app/constan/endpoint.dart';
+import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/helper/check_internet.dart';
 import 'package:sinden_tb_app/helper/logger_printer.dart';
 import 'package:sinden_tb_app/helper/network_response.dart';
@@ -16,10 +17,12 @@ var _log = Logger(
 );
 
 class RegistrasiApi {
-  Dio _normal({int? timeout, String? token}) {
+  Future<Dio> _normal({int? timeout, String? token}) async {
     String uri = Endpoint.baseUrl;
 
     _log.d(uri);
+    final tokenn = await Prefence().getToken();
+    _log.d("INI TOKEN $tokenn");
     BaseOptions options = BaseOptions(
       baseUrl: uri,
       responseType: ResponseType.json,
@@ -28,6 +31,7 @@ class RegistrasiApi {
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": Endpoint.apiKey,
+        if (tokenn != null) "Authorization": "Bearer $tokenn",
       },
 
       // ignore: missing_return
@@ -49,7 +53,7 @@ class RegistrasiApi {
 
   Future<NetworkResponse> _getRequest(
       {required String path, params, timeout, token}) async {
-    final dio = _normal(timeout: timeout, token: token);
+    final dio = await _normal(timeout: timeout, token: token);
     try {
       final internet = await CheckInternetConnection.check();
       if (!internet) {
@@ -91,8 +95,8 @@ class RegistrasiApi {
         dismissDirection: DismissDirection.horizontal,
       );
       return NetworkResponse.internetError();
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.connectionTimeout) {
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         Get.snackbar(
           "Request Timeout",
           "Silahkan ulangi beberapa saat lagi",
@@ -106,7 +110,7 @@ class RegistrasiApi {
 
       Get.snackbar(
         "Masalah Koneksi",
-        "Terjadi masalah pada koneksi internet.",
+        e.response.toString(),
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.black,
@@ -116,7 +120,7 @@ class RegistrasiApi {
     } catch (e) {
       Get.snackbar(
         "Terjadi Kesalahan",
-        "Silahkan ulangi beberapa saat lagi",
+        e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.black,
@@ -129,7 +133,7 @@ class RegistrasiApi {
   Future<NetworkResponse> _postRequest(
       {path, body, onSendProgress, timeout}) async {
     try {
-      final dio = _normal(timeout: timeout);
+      final dio = await _normal(timeout: timeout);
 
       final internet = await CheckInternetConnection.check();
       if (!internet) {
@@ -170,8 +174,8 @@ class RegistrasiApi {
         dismissDirection: DismissDirection.horizontal,
       );
       return NetworkResponse.internetError();
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.connectionTimeout) {
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         Get.snackbar(
           "Request Timeout",
           "Silahkan ulangi beberapa saat lagi",
@@ -185,7 +189,7 @@ class RegistrasiApi {
 
       Get.snackbar(
         "Terjadi Kesalahan1",
-        "Silahkan ulangi beberapa saat lagi",
+        e.response.toString(),
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.black,

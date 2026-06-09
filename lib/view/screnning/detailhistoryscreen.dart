@@ -95,10 +95,13 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                           Align(
                             alignment: Alignment.center,
                             child: Image.network(
-                              skriningController
-                                  .getDetailHistory!.data!.resultImage!,
-                              height: 120.h,
-                            ),
+                                skriningController
+                                    .getDetailHistory!.data!.resultImage!,
+                                height: 120.h,
+                                errorBuilder: (context, url, error) => Icon(
+                                      Icons.broken_image_outlined,
+                                      size: 100,
+                                    )),
                           ),
                           // Image.asset(
                           //   "assets/ic_iicSinden.png",
@@ -194,6 +197,9 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                       ),
                     )
                   ],
+                ),
+                SizedBox(
+                  height: 100,
                 )
               ],
             );

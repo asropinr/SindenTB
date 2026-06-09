@@ -38,53 +38,56 @@ class _TentangKamiScreenState extends State<TentangKamiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: AppColor.accentGreen,
-        appBar: AppBar(
+    return SafeArea(
+      top: false,
+      child: Scaffold(
           backgroundColor: AppColor.accentGreen,
-          elevation: 0,
-          title: const Text(
-            "Tentang Kami",
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColor.brown,
+          appBar: AppBar(
+            backgroundColor: AppColor.accentGreen,
+            elevation: 0,
+            title: const Text(
+              "Tentang Kami",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: AppColor.brown,
+              ),
             ),
-          ),
-          centerTitle: true,
-          leading: InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(left: 32),
-              child: Image.asset(
-                "assets/ic_back_arrow.png",
+            centerTitle: true,
+            leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 32),
+                child: Image.asset(
+                  "assets/ic_back_arrow.png",
+                ),
               ),
             ),
           ),
-        ),
-        body: Builder(builder: (_) {
-          if (isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              children: [
-                SizedBox(
-                  height: 16.h,
-                ),
-                Html(
-                  data: artikelController.getTentangKami!.data!.aboutText,
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-              ],
-            );
-          }
-        }));
+          body: Builder(builder: (_) {
+            if (isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView(
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                children: [
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Html(
+                    data: artikelController.getTentangKami!.data!.aboutText,
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                ],
+              );
+            }
+          })),
+    );
   }
 }

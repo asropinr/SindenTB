@@ -50,9 +50,11 @@ class _DetailArtikelScreenState extends State<DetailArtikelScreen> {
             borderRadius: BorderRadius.circular(4.w),
             child: SizedBox(
               height: 200.h,
-              child: Image.network(
-                widget.data.bannerImage!,
-              ),
+              child: Image.network(widget.data.bannerImage!,
+                  errorBuilder: (context, url, error) => Icon(
+                        Icons.broken_image_outlined,
+                        size: 100,
+                      )),
             ),
           ),
           SizedBox(

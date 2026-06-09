@@ -28,7 +28,7 @@ class GetSoalSkrining {
 }
 
 class Data {
-  String? questionId;
+  int? questionId;
   String? questionOrder;
   String? question;
   String? option1;
@@ -52,7 +52,7 @@ class Data {
     question = json['question'];
     option1 = json['option_1'];
     option2 = json['option_2'];
-    option3 = json['option_3'];
+    option3 = json['option_3'] ?? "";
     jawaban = "X";
   }
 

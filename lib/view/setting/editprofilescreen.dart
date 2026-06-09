@@ -57,18 +57,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   setData() async {
     email.text = widget.postLogin.data!.userEmail!;
     namaLengkap.text = widget.postLogin.data!.userName!;
-    asalSekolah.text = widget.postLogin.data!.userUniversity!;
+    asalSekolah.text = widget.postLogin.data!.userUniversity ?? "";
     noWa.text = widget.postLogin.data!.userPhone!;
     alamatLengkap.text = widget.postLogin.data!.userAddress!;
-    alamatPuskesmas.text = widget.postLogin.data!.userPuskesmas!;
+    alamatPuskesmas.text = widget.postLogin.data!.userPuskesmas ?? "";
     registerController.email.text = widget.postLogin.data!.userEmail!;
     registerController.namaLengkap.text = widget.postLogin.data!.userName!;
     registerController.asalSekolah.text =
-        widget.postLogin.data!.userUniversity!;
+        widget.postLogin.data!.userUniversity ?? "";
     registerController.noWa.text = widget.postLogin.data!.userPhone!;
     registerController.alamatLengkap.text = widget.postLogin.data!.userAddress!;
     registerController.alamatPuskesmas.text =
-        widget.postLogin.data!.userPuskesmas!;
+        widget.postLogin.data!.userPuskesmas ?? "";
     registerController.selectedDate =
         DateTime.parse(widget.postLogin.data!.dob!);
     registerController.idProv = widget.postLogin.data!.uProvinsiId;
@@ -76,8 +76,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .getListKabupaten(registerController.idProv!)
         .then((value) {
       registerController.getKabupaten?.data?.forEach((element) {
-        if (element.idKab == widget.postLogin.data!.uKabupatenId) {
-          registerController.idKab = element.idKab;
+        if (element.code == widget.postLogin.data!.uKabupatenId) {
+          registerController.idKab = element.code;
         }
       });
     });
@@ -86,8 +86,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .getListKecamatan(registerController.idKab!)
         .then((value) {
       registerController.getKecamatan?.data?.forEach((element) {
-        if (element.idKec == widget.postLogin.data!.uKecamatanId) {
-          registerController.idKec = element.idKec;
+        if (element.code == widget.postLogin.data!.uKecamatanId) {
+          registerController.idKec = element.code;
         }
       });
     });
@@ -96,8 +96,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .getListKelurahan(registerController.idKec!)
         .then((value) {
       registerController.getKelurahan?.data?.forEach((element) {
-        if (element.idKel == widget.postLogin.data!.uKelurahanId) {
-          registerController.idKel = element.idKel;
+        if (element.code == widget.postLogin.data!.uKelurahanId) {
+          registerController.idKel = element.code;
         }
       });
     });
@@ -142,7 +142,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataProvinsi();
   }
@@ -390,77 +389,83 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: 8,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                registerController.jenisKelamin = "laki-laki";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  registerController.jenisKelamin = "laki-laki";
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: registerController.jenisKelamin ==
+                                            "laki-laki"
+                                        ? AppColor.green
+                                        : AppColor.grey700,
+                                  ),
                                   color: registerController.jenisKelamin ==
                                           "laki-laki"
                                       ? AppColor.green
-                                      : AppColor.grey700,
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(4.w),
                                 ),
-                                color: registerController.jenisKelamin ==
-                                        "laki-laki"
-                                    ? AppColor.green
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(4.w),
-                              ),
-                              width: 160.w,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                "Laki - Laki",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: registerController.jenisKelamin ==
-                                          "laki-laki"
-                                      ? Colors.white
-                                      : AppColor.grey700,
+                                width: 160.w,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  "Laki - Laki",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: registerController.jenisKelamin ==
+                                            "laki-laki"
+                                        ? Colors.white
+                                        : AppColor.grey700,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                registerController.jenisKelamin = "perempuan";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  registerController.jenisKelamin = "perempuan";
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: registerController.jenisKelamin ==
+                                            "perempuan"
+                                        ? AppColor.green
+                                        : AppColor.grey700,
+                                  ),
                                   color: registerController.jenisKelamin ==
                                           "perempuan"
                                       ? AppColor.green
-                                      : AppColor.grey700,
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(4.w),
                                 ),
-                                color: registerController.jenisKelamin ==
-                                        "perempuan"
-                                    ? AppColor.green
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(4.w),
-                              ),
-                              width: 160.w,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                "Perempuan",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: registerController.jenisKelamin ==
-                                          "perempuan"
-                                      ? Colors.white
-                                      : AppColor.grey700,
+                                width: 160.w,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  "Perempuan",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: registerController.jenisKelamin ==
+                                            "perempuan"
+                                        ? Colors.white
+                                        : AppColor.grey700,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           )
@@ -526,9 +531,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 ? []
                                 : registerController.getProvinsi!.data!
                                     .map((e) => DropdownMenuItem(
-                                          value: e.idProv,
+                                          value: e.code,
                                           child: Text(
-                                            e.nama!,
+                                            e.name!,
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
@@ -609,9 +614,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       ? []
                                       : registerController.getKabupaten!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKab,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.namaKab!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
@@ -691,9 +696,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       ? []
                                       : registerController.getKecamatan!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKec,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.nama!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
@@ -771,9 +776,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       ? []
                                       : registerController.getKelurahan!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKel,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.nama!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,

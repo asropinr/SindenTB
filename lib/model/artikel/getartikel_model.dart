@@ -28,7 +28,7 @@ class GetArtikel {
 }
 
 class DataArtikel {
-  String? blogId;
+  int? blogId;
   String? blogTitle;
   String? blog;
   String? postBy;

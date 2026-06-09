@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_time_patterns.dart';
 import 'package:sinden_tb_app/constan/const.dart';
 import 'package:sinden_tb_app/model/register/getKecamatan_model.dart';
-import 'package:sinden_tb_app/model/artikel/getListPuskesmasbylongLat_model.dart';
 import 'package:sinden_tb_app/model/register/getPuskesmas_byKota_model.dart';
 import 'package:sinden_tb_app/model/register/getkebaputen_model.dart';
 import 'package:sinden_tb_app/model/register/getkelurahan_model.dart';
@@ -55,6 +51,22 @@ class RegisterController extends GetxController {
   XFile? pathImage;
   File? pic;
 
+  resetAll() {
+    email.clear();
+    password.clear();
+    namaLengkap.clear();
+    asalSekolah.clear();
+    noWa.clear();
+    alamatLengkap.clear();
+    alamatPuskesmas.clear();
+    idKab = null;
+    idKec = null;
+    idKel = null;
+    puskesmas = null;
+    kabupaten = null;
+    update();
+  }
+
   pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(
@@ -74,8 +86,8 @@ class RegisterController extends GetxController {
 
   setKabupaten() async {
     for (var element in getKabupaten!.data!) {
-      if (element.idKab == idKab) {
-        kabupaten = element.namaKab;
+      if (element.id == idKab) {
+        kabupaten = element.id;
       }
     }
   }

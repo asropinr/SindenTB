@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       //       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       //       child: widget!);
       // },
-      home: const ScreenUtil(),
+      home: PopScope(canPop: false, child: const ScreenUtil()),
     );
   }
 }
@@ -56,7 +56,7 @@ class _ScreenUtilState extends State<ScreenUtil> {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          home: child,
+          home: SafeArea(top: false, child: child!),
         );
       },
       child: const SplashScreen(),

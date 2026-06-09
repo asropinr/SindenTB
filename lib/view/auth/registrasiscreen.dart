@@ -38,6 +38,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
     if (picked != null) {
       setState(() {
         registerController.selectedDate = picked;
+        validasi();
       });
     }
   }
@@ -71,25 +72,22 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
   }
 
   validasi() {
-    if (registerController.namaLengkap.text.isEmpty &&
-        registerController.email.text.isEmpty &&
-        registerController.noWa.text.isEmpty &&
-        registerController.password.text.isEmpty &&
-        registerController.alamatLengkap.text.isEmpty &&
-        registerController.asalSekolah.text.isEmpty) {
-      setState(() {
-        enable = false;
-      });
-    } else {
-      setState(() {
-        enable = true;
-      });
-    }
+    setState(() {
+      enable = registerController.namaLengkap.text.isNotEmpty &&
+          registerController.email.text.isNotEmpty &&
+          registerController.noWa.text.isNotEmpty &&
+          registerController.password.text.isNotEmpty &&
+          registerController.alamatLengkap.text.isNotEmpty &&
+          registerController.idKab != null &&
+          registerController.idKec != null &&
+          registerController.idProv != null &&
+          registerController.idKel != null &&
+          registerController.selectedDate != null;
+    });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataProvinsi();
   }
@@ -113,6 +111,10 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
         leading: InkWell(
           onTap: () {
             Get.back();
+            registerController.resetAll();
+            setState(() {
+              enable = false;
+            });
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 32),
@@ -239,77 +241,81 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                         height: 8,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                registerController.jenisKelamin = "laki-laki";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  registerController.jenisKelamin = "laki-laki";
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: registerController.jenisKelamin ==
+                                            "laki-laki"
+                                        ? AppColor.green
+                                        : AppColor.grey700,
+                                  ),
                                   color: registerController.jenisKelamin ==
                                           "laki-laki"
                                       ? AppColor.green
-                                      : AppColor.grey700,
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(4.w),
                                 ),
-                                color: registerController.jenisKelamin ==
-                                        "laki-laki"
-                                    ? AppColor.green
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(4.w),
-                              ),
-                              width: 160.w,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                "Laki - Laki",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: registerController.jenisKelamin ==
-                                          "laki-laki"
-                                      ? Colors.white
-                                      : AppColor.grey700,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  "Laki - Laki",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: registerController.jenisKelamin ==
+                                            "laki-laki"
+                                        ? Colors.white
+                                        : AppColor.grey700,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                registerController.jenisKelamin = "perempuan";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  registerController.jenisKelamin = "perempuan";
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: registerController.jenisKelamin ==
+                                            "perempuan"
+                                        ? AppColor.green
+                                        : AppColor.grey700,
+                                  ),
                                   color: registerController.jenisKelamin ==
                                           "perempuan"
                                       ? AppColor.green
-                                      : AppColor.grey700,
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(4.w),
                                 ),
-                                color: registerController.jenisKelamin ==
-                                        "perempuan"
-                                    ? AppColor.green
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(4.w),
-                              ),
-                              width: 160.w,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                "Perempuan",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: registerController.jenisKelamin ==
-                                          "perempuan"
-                                      ? Colors.white
-                                      : AppColor.grey700,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  "Perempuan",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: registerController.jenisKelamin ==
+                                            "perempuan"
+                                        ? Colors.white
+                                        : AppColor.grey700,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           )
@@ -377,9 +383,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                 ? []
                                 : registerController.getProvinsi!.data!
                                     .map((e) => DropdownMenuItem(
-                                          value: e.idProv,
+                                          value: e.code,
                                           child: Text(
-                                            e.nama!,
+                                            e.name!,
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
@@ -458,9 +464,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                       ? []
                                       : registerController.getKabupaten!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKab,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.namaKab!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
@@ -539,9 +545,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                       ? []
                                       : registerController.getKecamatan!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKec,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.nama!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
@@ -619,9 +625,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                       ? []
                                       : registerController.getKelurahan!.data!
                                           .map((e) => DropdownMenuItem(
-                                                value: e.idKel,
+                                                value: e.code,
                                                 child: Text(
-                                                  e.nama!,
+                                                  e.name!,
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
@@ -714,8 +720,9 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                               child: TextField(
                                   maxLines: 5,
                                   cursorColor: AppColor.green,
+                                  textInputAction: TextInputAction.done,
                                   //enabled: enabled,
-                                  //controller: registerController.alamatLengkap,
+                                  controller: registerController.alamatLengkap,
                                   decoration: const InputDecoration(
                                     disabledBorder: InputBorder.none,
                                     border: InputBorder.none,
@@ -727,6 +734,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                   ),
                                   onChanged: (val) {
                                     registerController.alamatLengkap.text = val;
+                                    validasi();
                                   })),
                           SizedBox(height: 16.h),
                         ],
@@ -956,7 +964,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                       : () async {
                           //Get.to(BottomNavBarScreen());
                           if (registerController.isLainnya == false) {
-                            puskesmas = registerController.puskesmas!;
+                            puskesmas = registerController.puskesmas ?? "";
                           } else {
                             puskesmas = registerController.alamatPuskesmas.text;
                           }
@@ -1056,7 +1064,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
             child: TextField(
                 cursorColor: AppColor.green,
                 //enabled: enabled,
-                //controller: controller,
+                controller: controller,
                 decoration: InputDecoration(
                   disabledBorder: InputBorder.none,
                   border: InputBorder.none,

@@ -59,4 +59,13 @@ class Prefence {
     final isStatus = await getBoolPrefs(loginStatus);
     return isStatus ?? false;
   }
+
+  Future<String?> getToken() async {
+    try {
+      final login = await getDataLogin();
+      return login.token;
+    } catch (e) {
+      return null;
+    }
+  }
 }
