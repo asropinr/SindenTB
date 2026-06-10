@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
-import 'package:sinden_tb_app/helper/dialog.dart';
 import 'package:sinden_tb_app/view/puskesmas/bottom_sheet_puskesmas.dart';
 
 class PuskesmasListScreen extends StatefulWidget {
@@ -22,7 +20,7 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
     with WidgetsBindingObserver {
   ArtikelController artikelController = Get.find<ArtikelController>();
   bool isLoading = true;
-  Position? _position;
+  Position? position;
   String? lat;
   String? long;
   LocationPermission? permission;
@@ -58,9 +56,9 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
     if (position == null) return;
 
     setState(() {
-      _position = position;
-      lat = position.latitude.toString();
-      long = position.longitude.toString();
+      position = position;
+      lat = position!.latitude.toString();
+      long = position!.longitude.toString();
     });
   }
 
@@ -207,91 +205,77 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
                   SizedBox(
                     height: 32.h,
                   ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.w),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: MediaQuery.of(context).size.width * .02,
-                        runSpacing: 16.w,
-                        children: List.generate(
-                          artikelController
-                              .getListPuskesmaslonglat!.data!.length,
-                          (index) => InkWell(
-                            onTap: () {
-                              MapsLauncher.launchCoordinates(
-                                double.parse(artikelController
-                                    .getListPuskesmaslonglat!
-                                    .data![index]
-                                    .latitude!),
-                                double.parse(artikelController
-                                    .getListPuskesmaslonglat!
-                                    .data![index]
-                                    .longitude!),
-                              );
-                            },
-                            child: Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 80.w) /
-                                      2,
-                              padding: EdgeInsets.only(
-                                left: 8.w,
-                                right: 8.w,
-                                top: 8.h,
-                                bottom: 14.h,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.w),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:
-                                        AppColor.green.withValues(alpha: 0.2),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4),
+                  ...List.generate(
+                    artikelController.getListPuskesmaslonglat!.data!.length,
+                    (index) => InkWell(
+                      onTap: () {
+                        MapsLauncher.launchCoordinates(
+                          double.parse(artikelController
+                              .getListPuskesmaslonglat!.data![index].latitude!),
+                          double.parse(artikelController
+                              .getListPuskesmaslonglat!
+                              .data![index]
+                              .longitude!),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColor.green.withValues(alpha: 0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12)),
+                                  child: Image.asset(
+                                    "assets/image 16.png",
+                                    fit: BoxFit.fill,
                                   ),
-                                ],
-                              ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColor.lightGreen,
+                                      borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(2.w),
+                                        topLeft: Radius.circular(4.w),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(
+                                      artikelController.getListPuskesmaslonglat!
+                                          .data![index].distance!,
+                                      style: const TextStyle(
+                                        fontSize: 8,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Stack(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(2.w),
-                                        child: Image.asset(
-                                          "assets/bg_gambar_puskesmas.png",
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: AppColor.lightGreen,
-                                            borderRadius: BorderRadius.only(
-                                              bottomRight: Radius.circular(2.w),
-                                              topLeft: Radius.circular(4.w),
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.all(4),
-                                          child: Text(
-                                            artikelController
-                                                .getListPuskesmaslonglat!
-                                                .data![index]
-                                                .distance!,
-                                            style: const TextStyle(
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 8.h,
-                                  ),
                                   Text(
                                     artikelController.getListPuskesmaslonglat!
                                         .data![index].nama!,
@@ -320,8 +304,7 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
                                         vertical: 5.h, horizontal: 8.w),
                                     decoration: BoxDecoration(
                                       color: AppColor.lightGreen,
-                                      borderRadius:
-                                          BorderRadius.circular(100.w),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -329,9 +312,9 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
                                       children: [
                                         Row(
                                           children: [
-                                            Image.asset(
-                                              "assets/ic_maps.png",
-                                              height: 15.h,
+                                            Icon(
+                                              Icons.map_outlined,
+                                              color: AppColor.green,
                                             ),
                                             SizedBox(
                                               width: 4.w,
@@ -352,13 +335,15 @@ class _PuskesmasListScreenState extends State<PuskesmasListScreen>
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                 ],
               );
             }
