@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/artikel_controller.dart';
 import 'package:sinden_tb_app/helper/dialog.dart';
+import 'package:sinden_tb_app/view/puskesmas/bottom_sheet_puskesmas.dart';
 
 class PuskesmasListScreen extends StatefulWidget {
   const PuskesmasListScreen({
@@ -17,61 +18,151 @@ class PuskesmasListScreen extends StatefulWidget {
   State<PuskesmasListScreen> createState() => _PuskesmasListScreenState();
 }
 
-class _PuskesmasListScreenState extends State<PuskesmasListScreen> {
+class _PuskesmasListScreenState extends State<PuskesmasListScreen>
+    with WidgetsBindingObserver {
   ArtikelController artikelController = Get.find<ArtikelController>();
   bool isLoading = true;
   Position? _position;
   String? lat;
   String? long;
   LocationPermission? permission;
+  bool _fromSetting = false;
 
   getData() async {
+    setState(() {
+      isLoading = true;
+    });
+
     await getLocation();
-    await artikelController.getListPusLongLat(lat!, long!);
+
+    if (lat == null || long == null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    await artikelController.getListPusLongLat(
+      lat!,
+      long!,
+    );
+
     setState(() {
       isLoading = false;
     });
   }
 
   getLocation() async {
-    Position position = await _determinePosition();
+    Position? position = await _determinePosition();
+
+    if (position == null) return;
+
     setState(() {
       _position = position;
-      lat = _position!.latitude.toString();
-      long = _position!.longitude.toString();
+      lat = position.latitude.toString();
+      long = position.longitude.toString();
     });
   }
 
-  Future<Position> _determinePosition() async {
-    LocationPermission permission;
-
-    permission = await Geolocator.checkPermission();
+  Future<Position?> _determinePosition() async {
+    // Cek permission dulu
+    LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        //return Future.error('Location Permissions are denied');
-        openAppSettings();
-        Get.dialog(
-            const DialogError(
-              title: "Peringatan",
-              message:
-                  "Aktifkan Permission lokasi kamu untuk membantu mendapatkan puskesmas terdekat",
-              puskesmas: true,
-            ),
-            barrierDismissible: false);
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+
+        if (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever) {
+          _showPermissionBottomSheet();
+          return null;
+        }
       }
     }
 
+    if (permission == LocationPermission.deniedForever) {
+      _showPermissionBottomSheet();
+      return null;
+    }
+
+    // Baru cek GPS
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      _showGpsBottomSheet();
+      return null;
+    }
+
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+    );
+
     return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      locationSettings: locationSettings,
+    );
+  }
+
+  void _showPermissionBottomSheet() {
+    Get.bottomSheet(
+      BottomSheetPuskesmas(
+        title: "Izin Lokasi Dibutuhkan",
+        message:
+            "Aktifkan izin lokasi agar kami dapat menampilkan puskesmas terdekat.",
+        onTap: () async {
+          _fromSetting = true;
+
+          Get.back();
+
+          await Geolocator.openAppSettings();
+        },
+      ),
+      isDismissible: false,
+      enableDrag: false,
+    );
+  }
+
+  void _showGpsBottomSheet() {
+    Get.bottomSheet(
+      BottomSheetPuskesmas(
+        title: "GPS Belum Aktif",
+        message: "Aktifkan GPS untuk membantu mendapatkan puskesmas terdekat.",
+        onTap: () async {
+          _fromSetting = true;
+
+          Get.back();
+
+          await Geolocator.openLocationSettings();
+        },
+      ),
+      isDismissible: false,
+      enableDrag: false,
+    );
   }
 
   @override
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addObserver(this);
+
     getData();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _fromSetting) {
+      _fromSetting = false;
+
+      getData();
+    }
   }
 
   @override
