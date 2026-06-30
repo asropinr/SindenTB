@@ -39,7 +39,11 @@ class Detailfaqtopikscreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Html(data: answer),
+        child: ListView(
+          children: [
+            Html(data: answer),
+          ],
+        ),
       ),
     );
   }
