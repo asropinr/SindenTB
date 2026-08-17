@@ -120,7 +120,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         onTap: () async {
                           Get.to(DetailHistoryScreen(
                             idUser: skriningController
-                                .getHistory!.data![index].userFk!,
+                                .getHistory!.data![index].userFk!
+                                .toString(),
                             idHistory: skriningController
                                 .getHistory!.data![index].skriningId!
                                 .toString(),

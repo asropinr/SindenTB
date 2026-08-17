@@ -31,14 +31,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your current location for attendance purposes.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your current location for attendance purposes.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your current location for attendance purposes.</string>
+	<string>SindenTB uses your location to find and show the nearest Puskesmas</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your Photos library to let you upload profile and question image.</string>
+	<string>SindenTB needs access to your Photos library so you can select and upload a photo for your profile picture.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

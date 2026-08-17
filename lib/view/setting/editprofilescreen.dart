@@ -631,12 +631,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     registerController.idKec = null;
                                     registerController.idKel = null;
                                     registerController.idKab = val;
-                                    registerController.setKabupaten();
+
                                     setState(() {
                                       isKec = true;
                                     });
+                                    final kab = registerController
+                                        .getKabupaten!.data!
+                                        .firstWhere(
+                                      (element) =>
+                                          element.id ==
+                                          registerController.idKab,
+                                    );
                                     await registerController
-                                        .getListKecamatan(val!);
+                                        .getListPuskesmasByKota(kab.name ?? "");
                                     setState(() {
                                       isKec = false;
                                     });
@@ -793,8 +800,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     setState(() {
                                       isPuskes = true;
                                     });
-                                    await registerController
-                                        .getListPuskesmasByKota();
 
                                     setState(() {
                                       isPuskes = false;

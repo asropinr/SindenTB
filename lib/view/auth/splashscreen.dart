@@ -15,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  startSplashScreen() async {
+  Future<void> startSplashScreen() async {
     var status = await Prefence().getStatusLogin();
     Timer(
       const Duration(seconds: 3),

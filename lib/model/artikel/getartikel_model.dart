@@ -33,7 +33,7 @@ class DataArtikel {
   String? blog;
   String? postBy;
   String? postDate;
-  String? postRead;
+
   String? bannerImage;
 
   DataArtikel(
@@ -42,7 +42,6 @@ class DataArtikel {
       this.blog,
       this.postBy,
       this.postDate,
-      this.postRead,
       this.bannerImage});
 
   DataArtikel.fromJson(Map<String, dynamic> json) {
@@ -51,7 +50,7 @@ class DataArtikel {
     blog = json['blog'];
     postBy = json['post_by'];
     postDate = json['post_date'];
-    postRead = json['post_read'];
+
     bannerImage = json['banner_image'];
   }
 
@@ -62,7 +61,7 @@ class DataArtikel {
     data['blog'] = blog;
     data['post_by'] = postBy;
     data['post_date'] = postDate;
-    data['post_read'] = postRead;
+
     data['banner_image'] = bannerImage;
     return data;
   }

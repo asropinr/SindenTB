@@ -32,7 +32,6 @@ class RegisterController extends GetxController {
   String? idKec;
   String? idKel;
   String? puskesmas;
-  String? kabupaten;
   bool isLainnya = false;
 
   TextEditingController email = TextEditingController();
@@ -63,7 +62,7 @@ class RegisterController extends GetxController {
     idKec = null;
     idKel = null;
     puskesmas = null;
-    kabupaten = null;
+
     update();
   }
 
@@ -81,14 +80,6 @@ class RegisterController extends GetxController {
       pic = file;
 
       update();
-    }
-  }
-
-  setKabupaten() async {
-    for (var element in getKabupaten!.data!) {
-      if (element.id == idKab) {
-        kabupaten = element.id;
-      }
     }
   }
 
@@ -128,10 +119,10 @@ class RegisterController extends GetxController {
     }
   }
 
-  getListPuskesmasByKota() async {
+  getListPuskesmasByKota(String kab) async {
     getPuskesmas = null;
     update();
-    final res = await api.getPuskesmas(kabupaten);
+    final res = await api.getPuskesmas(kab);
     if (res.status == Status.success) {
       getPuskesmas = GetPuskesmas.fromJson(res.data!);
     }

@@ -37,7 +37,7 @@ class Data {
   String? dateLogin;
   String? userUniversity;
   String? dob;
-  Null? langitude;
+  String? langitude;
   String? longitude;
   String? uProvinsiId;
   String? uProvinsi;

@@ -29,7 +29,7 @@ class GetHistory {
 
 class Data {
   int? skriningId;
-  String? userFk;
+  int? userFk;
   String? dateCreate;
   String? status;
   String? statusResponden;
@@ -38,7 +38,7 @@ class Data {
   String? questionKey;
   String? resultTextColor;
   String? resultImage;
-  String? questionFk;
+  int? questionFk;
   String? questionFkText;
   String? questionFkAnswer;
 
