@@ -108,11 +108,11 @@ class _DetailEdukasiTBScreenState extends State<DetailEdukasiTBScreen> {
                         GestureDetector(
                           onTap: () async {
                             await launchUrl(Uri.parse(
-                                "https://sindentb.com/blog/post/edukasi-tbpost0030.html"));
+                                "https://penerbit.brin.go.id/press/catalog/download/319/274/915?inline=1"));
                           },
-                          child: const Text(
-                            "https://sindentb.com/blog/post/edukasi-tbpost0030.html",
-                            style: TextStyle(
+                          child: Text(
+                            "open link",
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.blueAccent,

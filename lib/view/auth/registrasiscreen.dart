@@ -507,11 +507,17 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                     );
 
                                     debugPrint(kab.name);
+                                    setState(() {
+                                      isKec = true;
+                                    });
+
                                     await registerController
                                         .getListPuskesmasByKota(kab.name ?? "");
-                                    // await registerController
-                                    //     .getListKecamatan(val!);
-
+                                    await registerController
+                                        .getListKecamatan(val!);
+                                    setState(() {
+                                      isKec = false;
+                                    });
                                     // registrationController.payload.kelas = val;
                                     // registrationController.setClassFK();
                                     // setState(() {});
@@ -665,8 +671,6 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                 //                     setState(() {
                 //                       isPuskes = true;
                 //                     });
-                //                     await registerController
-                //                         .getListPuskesmasByKota();
 
                 //                     setState(() {
                 //                       isPuskes = false;
@@ -1012,7 +1016,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                             "user_university":
                                 registerController.asalSekolah.text,
                             "dob": registerController.selectedDate == null
-                                ? 0
+                                ? ""
                                 : DateFormat(
                                     "y-MM-d",
                                   ).format(
@@ -1028,7 +1032,16 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
 
                           await postRegister(payload);
                           if (registerController.postRegister!.status == 1) {
-                            Get.back();
+                            Get.bottomSheet(
+                              BottomSheetSuccess(
+                                title: "Register Berhasil",
+                                message:
+                                    registerController.postRegister!.message ??
+                                        "Registrasi berhasil",
+                              ),
+                              isDismissible: true,
+                              enableDrag: true,
+                            );
                           } else {
                             Get.dialog(DialogError(
                                 title: "Register Gagal",

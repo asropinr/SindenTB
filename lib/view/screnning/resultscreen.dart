@@ -5,6 +5,7 @@ import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
 import 'package:sinden_tb_app/view/bottomnavbar.dart';
 import 'package:sinden_tb_app/view/puskesmas/puskesmasscreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
@@ -88,7 +89,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           borderRadius: BorderRadius.circular(4.w),
                           border: Border.all(
                               color: setTextColor(skriningController
-                                  .postJawabanSkrining!.data!.resultTextColor),
+                                  .postJawabanSkrining!.data!.resultTextColor!),
                               width: 5),
                         ),
                         child: Column(
@@ -112,6 +113,58 @@ class _ResultScreenState extends State<ResultScreen> {
                                   fontWeight: FontWeight.w400,
                                   color: AppColor.brown),
                               textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColor.accentGreen,
+                          borderRadius: BorderRadius.circular(4.w),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Catatan Penting",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.brown,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            const Text(
+                              "Hasil ini merupakan skrining mandiri berdasarkan gejala yang Anda laporkan, "
+                              "dan BUKAN merupakan diagnosis medis. Diagnosis TBC hanya dapat ditegakkan "
+                              "melalui pemeriksaan oleh tenaga kesehatan (misalnya pemeriksaan dahak/BTA, "
+                              "tes cepat molekuler, atau rontgen dada) di fasilitas kesehatan. "
+                              "Segera konsultasikan hasil ini ke Puskesmas/Faskes terdekat.",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.brown,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                            SizedBox(height: 8.h),
+                            GestureDetector(
+                              onTap: () async {
+                                await launchUrl(Uri.parse(
+                                    "https://tbindonesia.or.id/pustaka-tbc/pedoman/"));
+                              },
+                              child: const Text(
+                                "Sumber: Pedoman Nasional Penanggulangan Tuberkulosis, Kementerian Kesehatan RI",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -198,7 +251,7 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  setTextColor(color) {
+  Color setTextColor(String color) {
     if (color == "merah") {
       return AppColor.redWhite;
     } else if (color == "kuning") {

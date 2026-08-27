@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sinden_tb_app/constan/color.dart';
+import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/controller/faq_controller.dart';
+import 'package:sinden_tb_app/view/auth/loginscreen.dart';
 import 'package:sinden_tb_app/view/bantuan/detailfaqtopikscreen.dart';
 
 class HelpCenterScreen extends StatefulWidget {
@@ -16,23 +19,29 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   bool isloading = true;
 
   Future<void> getData(bool refresh) async {
-    final hasData = faqController.getListFaq?.data?.isNotEmpty ?? false;
-    if (refresh == false) {
-      if (hasData) {
-        isloading = false;
-        return;
+    var status = await Prefence().getStatusLogin();
+    if (status == true) {
+      final hasData = faqController.getListFaq?.data?.isNotEmpty ?? false;
+      if (refresh == false) {
+        if (hasData) {
+          isloading = false;
+          return;
+        }
       }
-    }
 
-    setState(() {
-      isloading = true;
-    });
+      setState(() {
+        isloading = true;
+      });
 
-    await faqController.getFaqList();
+      await faqController.getFaqList();
 
-    setState(() {
+      setState(() {
+        isloading = false;
+      });
+    } else {
       isloading = false;
-    });
+      setState(() {});
+    }
   }
 
   @override
@@ -66,6 +75,75 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               if (isloading) {
                 return const Center(
                   child: CircularProgressIndicator(),
+                );
+              } else if (faqController.getListFaq == null) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 32),
+                  padding: EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0XFFBFC9BF)),
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.green.withValues(alpha: 0.2)),
+                        child: Icon(
+                          Icons.lock_outline_rounded,
+                          size: 30,
+                          color: AppColor.green,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      const Text(
+                        "Akses Terbatas",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const Text(
+                        "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri, Edukasi TB, dan Chatbox",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0XFF404941)),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return LoginScreen();
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                              color: AppColor.green,
+                              borderRadius: BorderRadius.circular(100)),
+                          child: Text(
+                            "Login / Masuk",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 );
               } else {
                 return SingleChildScrollView(

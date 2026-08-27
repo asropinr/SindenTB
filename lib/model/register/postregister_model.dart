@@ -84,7 +84,7 @@ class Data {
     userPassword = json['user_password'];
     userEmail = json['user_email'];
     userRole = json['user_role'];
-    userPhone = json['user_phone'];
+    userPhone = json['user_phone'].toString();
     userAddress = json['user_address'];
     userFoto = json['user_foto'];
     userStatus = json['user_status'];

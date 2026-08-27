@@ -155,7 +155,7 @@ class RegisterController extends GetxController {
         noWa.text,
         alamatLengkap.text,
         asalSekolah.text,
-        selectedDate,
+        selectedDate ?? "",
         idProv,
         idKab,
         idKec,

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +8,8 @@ import 'package:sinden_tb_app/view/screnning/perviewdatadiriscreen.dart';
 
 class DoingScreen extends StatefulWidget {
   const DoingScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DoingScreen> createState() => _DoingScreenState();
@@ -184,7 +182,7 @@ class _DoingScreenState extends State<DoingScreen> {
                                                   height: 10,
                                                 ),
                                                 const Text(
-                                                  "Hasil yang di dapatkan adalah sebatas diagnosa dari pertanyaan yang diberikan. Untuk hasil yang lebih akurat mohon periksakan diri ke puskesmas terdekat atau ke dokter terkait",
+                                                  "Hasil yang Anda dapatkan merupakan hasil skrining mandiri berdasarkan gejala yang dilaporkan, dan BUKAN merupakan diagnosis medis. Untuk hasil yang lebih akurat, mohon periksakan diri ke puskesmas terdekat atau ke dokter terkait",
                                                   style: TextStyle(
                                                     fontFamily: "Calibri",
                                                     fontSize: 14,

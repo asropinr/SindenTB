@@ -12,8 +12,8 @@ import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -39,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //getLocation();
   }
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(100),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColor.green.withOpacity(0.2),
+                          color: AppColor.green.withValues(alpha: 0.2),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -376,6 +375,22 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
           ),
           SizedBox(
             height: 32.h,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return const BottomNavBarScreen();
+                },
+              ));
+            },
+            child: Text(
+              "Akses Tanpa Login",
+              style: TextStyle(color: AppColor.green, fontSize: 16),
+            ),
+          ),
+          SizedBox(
+            height: 16,
           ),
           Builder(builder: (_) {
             if (isLoading == true) {

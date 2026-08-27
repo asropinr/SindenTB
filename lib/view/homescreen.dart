@@ -9,6 +9,7 @@ import 'package:sinden_tb_app/controller/faq_controller.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/view/artikel/artikellistscreen.dart';
 import 'package:sinden_tb_app/view/artikel/detailartikel.dart';
+import 'package:sinden_tb_app/view/auth/loginscreen.dart';
 import 'package:sinden_tb_app/view/detailedukasiscreen.dart';
 import 'package:sinden_tb_app/view/puskesmas/puskesmasscreen.dart';
 import 'package:sinden_tb_app/view/screnning/indexscreen.dart';
@@ -29,25 +30,30 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
 
   Future getData() async {
-    postLogin = await Prefence().getDataLogin();
+    var status = await Prefence().getStatusLogin();
     setState(() {});
+    debugPrint("INI ini APA $status");
+    if (status == true) {
+      postLogin = await Prefence().getDataLogin();
+      setState(() {});
+    }
   }
 
   Future<void> getDataArtikel() async {
-    if (artikelController.getArtikel != null) {
-      setState(() {
-        isLoading = false;
-      });
-      return;
-    }
-
     setState(() {
       isLoading = true;
     });
 
+    // Selalu cek status login ulang, gak peduli artikel udah ke-cache atau belum
     await getData();
-    await artikelController.getProfileUser();
-    await artikelController.getListArtikel();
+
+    // Cache artikel cuma buat skip fetch artikel-nya doang, bukan skip getData()
+    if (artikelController.getArtikel == null) {
+      if (postLogin?.data != null) {
+        await artikelController.getProfileUser();
+      }
+      await artikelController.getListArtikel();
+    }
 
     setState(() {
       isLoading = false;
@@ -91,20 +97,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 2,
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(14.w),
-                      child: Image.network(
-                        artikelController.getprofileuserModel!.data!.userFoto!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, url, error) => ClipRRect(
-                          borderRadius: BorderRadius.circular(14.w),
-                          child: Image.asset(
+                    child: artikelController.getprofileuserModel == null
+                        ? Image.asset(
                             "assets/user_image.png",
                             fit: BoxFit.cover,
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(14.w),
+                            child: Image.network(
+                              artikelController
+                                  .getprofileuserModel!.data!.userFoto!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, url, error) => ClipRRect(
+                                borderRadius: BorderRadius.circular(14.w),
+                                child: Image.asset(
+                                  "assets/user_image.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ),
                   SizedBox(
                     width: 14.w,
@@ -124,16 +136,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 4.h,
                         ),
-                        Text(
-                          artikelController
-                                  .getprofileuserModel!.data!.userName ??
-                              "No name",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black,
-                          ),
-                        ),
+                        artikelController.getprofileuserModel == null
+                            ? Text(
+                                "User",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                ),
+                              )
+                            : Text(
+                                artikelController
+                                        .getprofileuserModel!.data!.userName ??
+                                    "No name",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                ),
+                              ),
                       ],
                     ),
                   )
@@ -143,138 +164,216 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 20.h,
             ),
-            InkWell(
-              onTap: () {
-                Get.to(IndexScrenningScreen());
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 32.w),
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage("assets/bg_card.png"),
-                    fit: BoxFit.fill,
-                  ),
-                  borderRadius: BorderRadius.circular(8.w),
-                  border: Border.all(
-                    color: AppColor.green,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Skrining",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: AppColor.brown,
-                            ),
+            Builder(
+              builder: (context) {
+                if (postLogin?.token == null) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 32),
+                    padding: EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Color(0XFFBFC9BF)),
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColor.green.withValues(alpha: 0.2)),
+                          child: Icon(
+                            Icons.lock_outline_rounded,
+                            size: 30,
+                            color: AppColor.green,
                           ),
-                          const Text(
-                            "TB",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: AppColor.brown,
-                            ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        const Text(
+                          "Akses Terbatas",
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          SizedBox(
-                            width: 190.w,
-                            child: const Text(
-                              "Skrining mandiri deteksi dini penyakit tuberkulosis",
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.brown,
+                        ),
+                        const Text(
+                          "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri, Edukasi TB, dan Chatbox",
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0XFF404941)),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return LoginScreen();
+                                },
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Image.asset(
-                      "assets/ic_card_scanning.png",
-                      height: 70.h,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            InkWell(
-              onTap: () {
-                Get.to(DetailEdukasiTBScreen());
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 32.w),
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage("assets/bg_card.png"),
-                    fit: BoxFit.fill,
-                  ),
-                  borderRadius: BorderRadius.circular(8.w),
-                  border: Border.all(
-                    color: AppColor.green,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Edukasi",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: AppColor.brown,
-                            ),
-                          ),
-                          const Text(
-                            "TB",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: AppColor.brown,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          SizedBox(
-                            width: 190.w,
-                            child: const Text(
-                              "Edukasi Penting tentang Penyakit, Pencegahan, dan Pengobatan TB",
+                            );
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                                color: AppColor.green,
+                                borderRadius: BorderRadius.circular(100)),
+                            child: Text(
+                              "Login / Masuk",
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.brown,
-                              ),
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    Image.asset(
-                      "assets/ic_card_edukasi.png",
-                      height: 80.h,
-                    )
-                  ],
-                ),
-              ),
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.to(IndexScrenningScreen());
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 32.w),
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              image: AssetImage("assets/bg_card.png"),
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.circular(8.w),
+                            border: Border.all(
+                              color: AppColor.green,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Skrining",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColor.brown,
+                                      ),
+                                    ),
+                                    const Text(
+                                      "TB",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColor.brown,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    SizedBox(
+                                      width: 190.w,
+                                      child: const Text(
+                                        "Skrining mandiri deteksi dini penyakit tuberkulosis",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColor.brown,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Image.asset(
+                                "assets/ic_card_scanning.png",
+                                height: 70.h,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(DetailEdukasiTBScreen());
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 32.w),
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              image: AssetImage("assets/bg_card.png"),
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.circular(8.w),
+                            border: Border.all(
+                              color: AppColor.green,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Edukasi",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColor.brown,
+                                      ),
+                                    ),
+                                    const Text(
+                                      "TB",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColor.brown,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    SizedBox(
+                                      width: 190.w,
+                                      child: const Text(
+                                        "Edukasi Penting tentang Penyakit, Pencegahan, dan Pengobatan TB",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColor.brown,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Image.asset(
+                                "assets/ic_card_edukasi.png",
+                                height: 80.h,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
             SizedBox(
               height: 16.h,

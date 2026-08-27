@@ -7,8 +7,8 @@ import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
             if (status == true) {
               return const BottomNavBarScreen();
             } else {
-              return const LoginScreen();
+              return LoginScreen();
             }
           },
         ),

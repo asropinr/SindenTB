@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sinden_tb_app/constan/color.dart';
+import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/view/bantuan/chatboxscreen.dart';
 import 'package:sinden_tb_app/view/bantuan/faqscreen.dart';
 import 'package:sinden_tb_app/view/homescreen.dart';
@@ -18,6 +19,7 @@ class BottomNavBarScreen extends StatefulWidget {
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   final pageControl = PageController();
   int selectIndex = 0;
+  var status;
 
   ontapKonten(int index) {
     setState(() {
@@ -29,13 +31,28 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     setState(() {});
   }
 
+  Future<void> _loadLoginStatus() async {
+    final result = await Prefence().getStatusLogin();
+    if (mounted) {
+      setState(() {
+        status = result;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLoginStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: buildBottomAppBar(),
+        bottomNavigationBar: buildBottomAppBar(status),
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: pageControl,
@@ -46,28 +63,30 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             SettingScreen(),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          shape: CircleBorder(),
-          backgroundColor: AppColor.green,
-          child: Icon(
-            Icons.messenger_rounded,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const HealthAssistantScreen(),
+        floatingActionButton: status == false
+            ? null
+            : FloatingActionButton(
+                shape: CircleBorder(),
+                backgroundColor: AppColor.green,
+                child: Icon(
+                  Icons.messenger_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const HealthAssistantScreen(),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
 
-  Widget buildBottomAppBar() {
+  Widget buildBottomAppBar(status) {
     return MediaQuery.removePadding(
       context: context,
       removeBottom: true,
@@ -97,7 +116,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                   index: 1,
                 ),
               ),
-              const SizedBox(width: 60),
+              SizedBox(width: status == true ? 60 : 0),
               Expanded(
                 child: _navItem(
                   icon: null,

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/model/artikel/getartikel_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailArtikelScreen extends StatefulWidget {
   final DataArtikel data;
@@ -85,6 +86,34 @@ class _DetailArtikelScreenState extends State<DetailArtikelScreen> {
           ),
           Html(
             data: widget.data.blog,
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          const Text(
+            "Sumber :",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColor.brown,
+            ),
+          ),
+          SizedBox(
+            height: 4.h,
+          ),
+          GestureDetector(
+            onTap: () async {
+              await launchUrl(Uri.parse(
+                  "https://penerbit.brin.go.id/press/catalog/download/319/274/915?inline=1"));
+            },
+            child: Text(
+              "Kementerian Kesehatan RI & Badan Riset dan Inovasi Nasional (BRIN)",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueAccent,
+              ),
+            ),
           ),
           SizedBox(
             height: 30.h,
