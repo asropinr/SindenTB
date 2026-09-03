@@ -16,18 +16,19 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> startSplashScreen() async {
-    var status = await Prefence().getStatusLogin();
+    //var status = await Prefence().getStatusLogin();
     Timer(
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) {
-            if (status == true) {
-              return const BottomNavBarScreen();
-            } else {
-              return LoginScreen();
-            }
+            // if (status == true) {
+            //   return const BottomNavBarScreen();
+            // } else {
+            //   return LoginScreen();
+            // }
+            return const BottomNavBarScreen();
           },
         ),
       ),

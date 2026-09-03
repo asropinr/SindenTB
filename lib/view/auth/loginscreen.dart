@@ -376,19 +376,19 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
           SizedBox(
             height: 32.h,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) {
-                  return const BottomNavBarScreen();
-                },
-              ));
-            },
-            child: Text(
-              "Akses Tanpa Login",
-              style: TextStyle(color: AppColor.green, fontSize: 16),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.pushReplacement(context, MaterialPageRoute(
+          //       builder: (context) {
+          //         return const BottomNavBarScreen();
+          //       },
+          //     ));
+          //   },
+          //   child: Text(
+          //     "Akses Tanpa Login",
+          //     style: TextStyle(color: AppColor.green, fontSize: 16),
+          //   ),
+          // ),
           SizedBox(
             height: 16,
           ),
