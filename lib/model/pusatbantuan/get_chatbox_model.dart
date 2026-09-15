@@ -29,6 +29,7 @@ class Data {
   bool? isEnd;
   String? actionType;
   String? actionUrl;
+  List<Citations>? citations;
   List<Options>? options;
 
   Data(
@@ -38,6 +39,7 @@ class Data {
       this.isEnd,
       this.actionType,
       this.actionUrl,
+      this.citations,
       this.options});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,12 @@ class Data {
     isEnd = json['is_end'];
     actionType = json['action_type'];
     actionUrl = json['action_url'];
+    if (json['citations'] != null) {
+      citations = <Citations>[];
+      json['citations'].forEach((v) {
+        citations!.add(new Citations.fromJson(v));
+      });
+    }
     if (json['options'] != null) {
       options = <Options>[];
       json['options'].forEach((v) {
@@ -63,9 +71,49 @@ class Data {
     data['is_end'] = this.isEnd;
     data['action_type'] = this.actionType;
     data['action_url'] = this.actionUrl;
+    if (this.citations != null) {
+      data['citations'] = this.citations!.map((v) => v.toJson()).toList();
+    }
     if (this.options != null) {
       data['options'] = this.options!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Citations {
+  String? id;
+  String? code;
+  String? title;
+  String? publisher;
+  String? sectionRef;
+  String? fileUrl;
+
+  Citations(
+      {this.id,
+      this.code,
+      this.title,
+      this.publisher,
+      this.sectionRef,
+      this.fileUrl});
+
+  Citations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    title = json['title'];
+    publisher = json['publisher'];
+    sectionRef = json['section_ref'];
+    fileUrl = json['file_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['title'] = this.title;
+    data['publisher'] = this.publisher;
+    data['section_ref'] = this.sectionRef;
+    data['file_url'] = this.fileUrl;
     return data;
   }
 }

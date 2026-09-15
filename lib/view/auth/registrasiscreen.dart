@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -72,11 +74,33 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
   }
 
   void validasi() {
+    final isAndroid = Platform.isAndroid;
+
+    final basicValid = registerController.namaLengkap.text.trim().isNotEmpty &&
+        registerController.email.text.trim().isNotEmpty &&
+        registerController.password.text.trim().isNotEmpty;
+
+    if (!isAndroid) {
+      setState(() {
+        enable = basicValid;
+      });
+      return;
+    }
+
+    final androidValid = basicValid &&
+        registerController.asalSekolah.text.trim().isNotEmpty &&
+        registerController.noWa.text.trim().isNotEmpty &&
+        registerController.selectedDate != null &&
+        registerController.idProv != null &&
+        registerController.idKab != null &&
+        registerController.alamatLengkap.text.trim().isNotEmpty &&
+        (registerController.isLainnya
+            ? registerController.alamatPuskesmas.text.trim().isNotEmpty
+            : registerController.puskesmas != null &&
+                registerController.puskesmas.toString().isNotEmpty);
+
     setState(() {
-      enable = registerController.namaLengkap.text.isNotEmpty &&
-          registerController.email.text.isNotEmpty &&
-          registerController.password.text.isNotEmpty &&
-          registerController.alamatLengkap.text.isNotEmpty;
+      enable = androidValid;
     });
   }
 
@@ -356,11 +380,11 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                             color: AppColor.brown,
                           ),
                           children: <TextSpan>[
-                            TextSpan(
-                                text: " *",
-                                style: TextStyle(
-                                    color: AppColor.redWhite,
-                                    fontWeight: FontWeight.bold))
+                            // TextSpan(
+                            //     text: " *",
+                            //     style: TextStyle(
+                            //         color: AppColor.redWhite,
+                            //         fontWeight: FontWeight.bold))
                           ],
                         ),
                       ),
@@ -416,10 +440,11 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                               setState(() {
                                 isKab = false;
                               });
+
                               // registrationController.payload.kelas = val;
                               // registrationController.setClassFK();
                               // setState(() {});
-                              // validation();
+                              validasi();
                             },
                           ),
                         ),
@@ -446,11 +471,11 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                   color: AppColor.brown,
                                 ),
                                 children: <TextSpan>[
-                                  TextSpan(
-                                      text: " *",
-                                      style: TextStyle(
-                                          color: AppColor.redWhite,
-                                          fontWeight: FontWeight.bold))
+                                  // TextSpan(
+                                  //     text: " *",
+                                  //     style: TextStyle(
+                                  //         color: AppColor.redWhite,
+                                  //         fontWeight: FontWeight.bold))
                                 ],
                               ),
                             ),
@@ -522,6 +547,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                     // registrationController.setClassFK();
                                     // setState(() {});
                                     // validation();
+                                    validasi();
                                   },
                                 ),
                               ),
@@ -532,160 +558,171 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                 SizedBox(
                   height: 16.h,
                 ),
-                // isKec == true
-                //     ? ShimmerHome(h: 20.h, w: MediaQuery.of(context).size.width)
-                //     : Container(
-                //         padding: EdgeInsets.symmetric(horizontal: 32.w),
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             const Text(
-                //               "Kecamatan Domisili",
-                //               style: TextStyle(
-                //                 fontSize: 14,
-                //                 fontWeight: FontWeight.w600,
-                //                 color: AppColor.brown,
-                //               ),
-                //             ),
-                //             const SizedBox(
-                //               height: 8,
-                //             ),
-                //             Container(
-                //               padding: EdgeInsets.symmetric(horizontal: 8.w),
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.circular(8),
-                //                 color: Colors.white,
-                //                 border: Border.all(
-                //                   color: AppColor.grey700,
-                //                 ),
-                //               ),
-                //               child: DropdownButtonHideUnderline(
-                //                 child: DropdownButton<String>(
-                //                   icon: const Icon(Icons.keyboard_arrow_down),
-                //                   isExpanded: true,
-                //                   hint: const Text(
-                //                     "Pilih Kecamatan Kamu",
-                //                     style: TextStyle(
-                //                       fontSize: 12,
-                //                       color: AppColor.grey800,
-                //                     ),
-                //                   ),
-                //                   items: registerController.getKecamatan == null
-                //                       ? []
-                //                       : registerController.getKecamatan!.data!
-                //                           .map((e) => DropdownMenuItem(
-                //                                 value: e.code,
-                //                                 child: Text(
-                //                                   e.name!,
-                //                                   style: const TextStyle(
-                //                                     fontSize: 12,
-                //                                     fontWeight: FontWeight.w500,
-                //                                     color: AppColor.grey800,
-                //                                   ),
-                //                                 ),
-                //                               ))
-                //                           .toList(),
-                //                   value: registerController.idKec,
-                //                   onChanged: (String? val) async {
-                //                     registerController.idKec = val;
-                //                     registerController.idKel = null;
+                if (Platform.isAndroid) ...[
+                  isKec == true
+                      ? ShimmerHome(
+                          h: 20.h, w: MediaQuery.of(context).size.width)
+                      : Container(
+                          padding: EdgeInsets.symmetric(horizontal: 32.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Kecamatan Domisili",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColor.brown,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: AppColor.grey700,
+                                  ),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    isExpanded: true,
+                                    hint: const Text(
+                                      "Pilih Kecamatan Kamu",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColor.grey800,
+                                      ),
+                                    ),
+                                    items: registerController.getKecamatan ==
+                                            null
+                                        ? []
+                                        : registerController.getKecamatan!.data!
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e.code,
+                                                  child: Text(
+                                                    e.name!,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: AppColor.grey800,
+                                                    ),
+                                                  ),
+                                                ))
+                                            .toList(),
+                                    value: registerController.idKec,
+                                    onChanged: (String? val) async {
+                                      registerController.idKec = val;
+                                      registerController.idKel = null;
 
-                //                     setState(() {
-                //                       isKel = true;
-                //                     });
-                //                     await registerController
-                //                         .getListKelurahan(val!);
-                //                     setState(() {
-                //                       isKel = false;
-                //                     });
-                //                     // registrationController.payload.kelas = val;
-                //                     // registrationController.setClassFK();
-                //                     // setState(() {});
-                //                     // validation();
-                //                   },
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                // SizedBox(
-                //   height: 16.h,
-                // ),
-                // isKel == true
-                //     ? ShimmerHome(h: 20.h, w: MediaQuery.of(context).size.width)
-                //     : Container(
-                //         padding: EdgeInsets.symmetric(horizontal: 32.w),
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             const Text(
-                //               "Kelurahan Domisili",
-                //               style: TextStyle(
-                //                 fontSize: 14,
-                //                 fontWeight: FontWeight.w600,
-                //                 color: AppColor.brown,
-                //               ),
-                //             ),
-                //             const SizedBox(
-                //               height: 8,
-                //             ),
-                //             Container(
-                //               padding: EdgeInsets.symmetric(horizontal: 8.w),
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.circular(8),
-                //                 color: Colors.white,
-                //                 border: Border.all(
-                //                   color: AppColor.grey700,
-                //                 ),
-                //               ),
-                //               child: DropdownButtonHideUnderline(
-                //                 child: DropdownButton<String>(
-                //                   icon: const Icon(Icons.keyboard_arrow_down),
-                //                   isExpanded: true,
-                //                   hint: const Text(
-                //                     "Pilih Kelurahan Kamu",
-                //                     style: TextStyle(
-                //                       fontSize: 12,
-                //                       color: AppColor.grey800,
-                //                     ),
-                //                   ),
-                //                   items: registerController.getKelurahan == null
-                //                       ? []
-                //                       : registerController.getKelurahan!.data!
-                //                           .map((e) => DropdownMenuItem(
-                //                                 value: e.code,
-                //                                 child: Text(
-                //                                   e.name!,
-                //                                   style: const TextStyle(
-                //                                     fontSize: 12,
-                //                                     fontWeight: FontWeight.w500,
-                //                                     color: AppColor.grey800,
-                //                                   ),
-                //                                 ),
-                //                               ))
-                //                           .toList(),
-                //                   value: registerController.idKel,
-                //                   onChanged: (String? val) async {
-                //                     registerController.idKel = val;
-                //                     setState(() {
-                //                       isPuskes = true;
-                //                     });
+                                      setState(() {
+                                        isKel = true;
+                                      });
+                                      await registerController
+                                          .getListKelurahan(val!);
+                                      setState(() {
+                                        isKel = false;
+                                      });
+                                      // registrationController.payload.kelas = val;
+                                      // registrationController.setClassFK();
+                                      // setState(() {});
+                                      // validation();
+                                      validasi();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  isKel == true
+                      ? ShimmerHome(
+                          h: 20.h, w: MediaQuery.of(context).size.width)
+                      : Container(
+                          padding: EdgeInsets.symmetric(horizontal: 32.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Kelurahan Domisili",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColor.brown,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: AppColor.grey700,
+                                  ),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    isExpanded: true,
+                                    hint: const Text(
+                                      "Pilih Kelurahan Kamu",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColor.grey800,
+                                      ),
+                                    ),
+                                    items: registerController.getKelurahan ==
+                                            null
+                                        ? []
+                                        : registerController.getKelurahan!.data!
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e.code,
+                                                  child: Text(
+                                                    e.name!,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: AppColor.grey800,
+                                                    ),
+                                                  ),
+                                                ))
+                                            .toList(),
+                                    value: registerController.idKel,
+                                    onChanged: (String? val) async {
+                                      registerController.idKel = val;
+                                      setState(() {
+                                        isPuskes = true;
+                                      });
 
-                //                     setState(() {
-                //                       isPuskes = false;
-                //                     });
-                //                     // registrationController.payload.kelas = val;
-                //                     // registrationController.setClassFK();
-                //                     // setState(() {});
-                //                     // validation();
-                //                   },
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
+                                      setState(() {
+                                        isPuskes = false;
+                                      });
+                                      // registrationController.payload.kelas = val;
+                                      // registrationController.setClassFK();
+                                      // setState(() {});
+                                      // validation();
+                                      validasi();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                ],
+
                 SizedBox(
                   height: 16.h,
                 ),
@@ -732,11 +769,11 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                 color: Colors.white,
                               ),
                               children: <TextSpan>[
-                                TextSpan(
-                                    text: " *",
-                                    style: TextStyle(
-                                        color: AppColor.redWhite,
-                                        fontWeight: FontWeight.bold))
+                                // TextSpan(
+                                //     text: " *",
+                                //     style: TextStyle(
+                                //         color: AppColor.redWhite,
+                                //         fontWeight: FontWeight.bold))
                               ],
                             ),
                           ),
@@ -932,6 +969,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                                   // registrationController.setClassFK();
                                                   // setState(() {});
                                                   // validation();
+                                                  validasi();
                                                 },
                                               ),
                                             ),
@@ -981,6 +1019,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                     onChanged: (val) {
                                       registerController.alamatPuskesmas.text =
                                           val;
+                                      validasi();
                                     }),
                               ),
                               SizedBox(height: 16.h),
@@ -1011,8 +1050,12 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
                                 ? 0
                                 : registerController.noWa.text,
                             "user_password": registerController.password.text,
-                            "user_address":
-                                registerController.alamatLengkap.text,
+                            "user_address": registerController
+                                    .alamatLengkap.text
+                                    .trim()
+                                    .isEmpty
+                                ? 'Belum Diisi'
+                                : registerController.alamatLengkap.text.trim(),
                             "user_university":
                                 registerController.asalSekolah.text,
                             "dob": registerController.selectedDate == null
@@ -1032,6 +1075,7 @@ class _RegistrasiScreenState extends State<RegistrasiScreen> {
 
                           await postRegister(payload);
                           if (registerController.postRegister!.status == 1) {
+                            registerController.resetAll();
                             Get.bottomSheet(
                               BottomSheetSuccess(
                                 title: "Register Berhasil",

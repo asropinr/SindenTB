@@ -62,6 +62,7 @@ class RegisterController extends GetxController {
     idKec = null;
     idKel = null;
     puskesmas = null;
+    selectedDate = null;
 
     update();
   }

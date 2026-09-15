@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sinden_tb_app/constan/color.dart';
-import 'package:sinden_tb_app/constan/preference.dart';
-import 'package:sinden_tb_app/view/auth/loginscreen.dart';
 import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
 class SplashScreen extends StatefulWidget {

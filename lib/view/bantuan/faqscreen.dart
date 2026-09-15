@@ -107,7 +107,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                         ),
                       ),
                       const Text(
-                        "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri, Edukasi TB, dan Chatbox",
+                        "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri dan Chatbox",
                         style:
                             TextStyle(fontSize: 14, color: Color(0XFF404941)),
                         textAlign: TextAlign.center,

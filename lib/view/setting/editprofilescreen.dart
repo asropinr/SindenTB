@@ -69,38 +69,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     registerController.alamatLengkap.text = widget.postLogin.data!.userAddress!;
     registerController.alamatPuskesmas.text =
         widget.postLogin.data!.userPuskesmas ?? "";
-    registerController.selectedDate =
-        DateTime.parse(widget.postLogin.data!.dob!);
+    registerController.selectedDate = widget.postLogin.data!.dob != null
+        ? DateTime.parse(widget.postLogin.data!.dob!)
+        : null;
     registerController.idProv = widget.postLogin.data!.uProvinsiId;
-    await registerController
-        .getListKabupaten(registerController.idProv!)
-        .then((value) {
-      registerController.getKabupaten?.data?.forEach((element) {
-        if (element.code == widget.postLogin.data!.uKabupatenId) {
-          registerController.idKab = element.code;
-        }
-      });
-    });
 
-    await registerController
-        .getListKecamatan(registerController.idKab!)
-        .then((value) {
-      registerController.getKecamatan?.data?.forEach((element) {
-        if (element.code == widget.postLogin.data!.uKecamatanId) {
-          registerController.idKec = element.code;
-        }
+    if (registerController.idProv != null) {
+      await registerController
+          .getListKabupaten(registerController.idProv!)
+          .then((value) {
+        registerController.getKabupaten?.data?.forEach((element) {
+          if (element.code == widget.postLogin.data!.uKabupatenId) {
+            registerController.idKab = element.code;
+          }
+        });
       });
-    });
+    }
 
-    await registerController
-        .getListKelurahan(registerController.idKec!)
-        .then((value) {
-      registerController.getKelurahan?.data?.forEach((element) {
-        if (element.code == widget.postLogin.data!.uKelurahanId) {
-          registerController.idKel = element.code;
-        }
+    if (registerController.idKab != null) {
+      await registerController
+          .getListKecamatan(registerController.idKab!)
+          .then((value) {
+        registerController.getKecamatan?.data?.forEach((element) {
+          if (element.code == widget.postLogin.data!.uKecamatanId) {
+            registerController.idKec = element.code;
+          }
+        });
       });
-    });
+    }
+
+    if (registerController.idKec != null) {
+      await registerController
+          .getListKelurahan(registerController.idKec!)
+          .then((value) {
+        registerController.getKelurahan?.data?.forEach((element) {
+          if (element.code == widget.postLogin.data!.uKelurahanId) {
+            registerController.idKel = element.code;
+          }
+        });
+      });
+    }
   }
 
   getDataProvinsi() async {

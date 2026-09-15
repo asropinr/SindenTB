@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.sindenTB.sinden_tb_app"
+    namespace = "com.sindenTB.sindenTBprototype"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 

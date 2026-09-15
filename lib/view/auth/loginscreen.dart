@@ -122,6 +122,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const BottomNavBarScreen();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Akses Tanpa Login",
+                    style: TextStyle(
+                      color: AppColor.green,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColor.green,
+                    ),
+                  ),
+                )
               ],
             ),
           ],
@@ -329,6 +352,7 @@ class _BottomSheetLoginState extends State<BottomSheetLogin> {
           ),
           InkWell(
             onTap: () {
+              Get.back();
               Get.to(const RegistrasiScreen());
             },
             child: RichText(

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/controller/faq_controller.dart';
+import 'package:sinden_tb_app/model/pusatbantuan/get_chatbox_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatItem {
   final String text;
   final bool isUser;
   List<dynamic> options;
+  List<Citations> citations;
 
   ChatItem({
     required this.text,
     required this.isUser,
     this.options = const [],
+    this.citations = const [],
   });
 }
 
@@ -55,6 +58,7 @@ class _HealthAssistantScreenState extends State<HealthAssistantScreen> {
           text: data.text ?? "",
           isUser: false,
           options: data.options ?? [],
+          citations: data.citations ?? [],
         ),
       );
     }
@@ -116,6 +120,7 @@ class _HealthAssistantScreenState extends State<HealthAssistantScreen> {
             text: data.text ?? "",
             isUser: false,
             options: data.options ?? [],
+            citations: data.citations ?? [],
           ),
         );
       }
@@ -266,10 +271,105 @@ class _HealthAssistantScreenState extends State<HealthAssistantScreen> {
                             ).toList(),
                           ),
                         ),
+                      if (!message.isUser && message.citations.isNotEmpty)
+                        _citationList(message.citations),
                     ],
                   );
                 },
               ),
+      ),
+    );
+  }
+
+  Widget _citationList(List<Citations> citations) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(
+        bottom: 16,
+      ),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Sumber informasi",
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...citations.map(
+            (citation) {
+              return InkWell(
+                onTap: () async {
+                  if (citation.fileUrl == null || citation.fileUrl!.isEmpty) {
+                    return;
+                  }
+
+                  final uri = Uri.tryParse(
+                    citation.fileUrl!,
+                  );
+
+                  if (uri != null) {
+                    await launchUrl(
+                      uri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.article_outlined,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              citation.title ?? "Untitled",
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (citation.publisher != null)
+                              Text(
+                                citation.publisher!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.open_in_new,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

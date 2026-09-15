@@ -6,6 +6,7 @@ import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
 import 'package:sinden_tb_app/view/auth/loginscreen.dart';
+import 'package:sinden_tb_app/view/bottomnavbar.dart';
 import 'package:sinden_tb_app/view/setting/editprofilescreen.dart';
 import 'package:sinden_tb_app/view/setting/tentangkamiscreen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -85,7 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                   const Text(
-                    "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri, Edukasi TB, dan Chatbox",
+                    "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri dan Chatbox",
                     style: TextStyle(fontSize: 14, color: Color(0XFF404941)),
                     textAlign: TextAlign.center,
                   ),
@@ -318,7 +319,19 @@ class _SettingScreenState extends State<SettingScreen> {
                         SharedPreferences sharedPreferences =
                             await SharedPreferences.getInstance();
                         await sharedPreferences.clear();
-                        Get.offAll(const LoginScreen());
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              // if (status == true) {
+                              //   return const BottomNavBarScreen();
+                              // } else {
+                              //   return LoginScreen();
+                              // }
+                              return const BottomNavBarScreen();
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 32.w),

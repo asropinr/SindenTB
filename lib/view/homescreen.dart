@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         const Text(
-                          "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri, Edukasi TB, dan Chatbox",
+                          "Masuk ke akun Anda untuk mengakses fitur Skrining mandiri dan Chatbox",
                           style:
                               TextStyle(fontSize: 14, color: Color(0XFF404941)),
                           textAlign: TextAlign.center,
@@ -297,74 +297,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               Image.asset(
                                 "assets/ic_card_scanning.png",
                                 height: 70.h,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.to(DetailEdukasiTBScreen());
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 32.w),
-                          padding: EdgeInsets.all(16.w),
-                          decoration: BoxDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage("assets/bg_card.png"),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(8.w),
-                            border: Border.all(
-                              color: AppColor.green,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Edukasi",
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColor.brown,
-                                      ),
-                                    ),
-                                    const Text(
-                                      "TB",
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColor.brown,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    SizedBox(
-                                      width: 190.w,
-                                      child: const Text(
-                                        "Edukasi Penting tentang Penyakit, Pencegahan, dan Pengobatan TB",
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColor.brown,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Image.asset(
-                                "assets/ic_card_edukasi.png",
-                                height: 80.h,
                               )
                             ],
                           ),
