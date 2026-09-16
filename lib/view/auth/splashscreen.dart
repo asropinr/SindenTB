@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.1),
                     child: const Text(
-                      "Sinden TB",
+                      "Sinden TB - Prototype",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
