@@ -27,7 +27,7 @@ class Data {
   String? questionKey;
   String? resultTextColor;
   String? resultImage;
-  String? questionFk;
+  int? questionFk;
   String? questionFkText;
   String? questionFkAnswer;
   String? statusResponden;

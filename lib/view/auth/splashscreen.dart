@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.4),
               child: Align(
                 alignment: Alignment.topCenter,
-                child: Image.asset("assets/ic_iconApps.png"),
+                child: Image.asset("assets/icon_new2.png"),
               ),
             ),
             Align(

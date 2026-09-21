@@ -55,97 +55,98 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.bottomCenter,
               child: Image.asset("assets/bg_blur_bottom.png"),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 40.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Image.asset("assets/ic_iconApps.png"),
-                ),
-                SizedBox(
-                  height: 32.h,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  child: const Text(
-                    "Deteksi dini resiko penularan tuberkulosis",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Image.asset("assets/icon_new2.png"),
                   ),
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                SizedBox(
-                  height: 35.h,
-                ),
-                InkWell(
-                  onTap: () {
-                    showBottomSheetLogin();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 32.w, vertical: 18.h),
-                    decoration: BoxDecoration(
-                      color: AppColor.brown,
-                      borderRadius: BorderRadius.circular(100),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColor.green.withValues(alpha: 0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Mulai",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Image.asset(
-                          "assets/ic_forward_arrow.png",
-                          height: 14.h,
-                        )
-                      ],
-                    ),
+                  Text(
+                    "SINDEN TB - Prototype",
+                    style: TextStyle(fontSize: 26, color: AppColor.brown),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const BottomNavBarScreen();
-                        },
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: const Text(
+                      "Deteksi dini resiko penularan tuberkulosis",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Akses Tanpa Login",
-                    style: TextStyle(
-                      color: AppColor.green,
-                      decoration: TextDecoration.underline,
-                      decorationColor: AppColor.green,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showBottomSheetLogin();
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 32.w, vertical: 18.h),
+                      decoration: BoxDecoration(
+                        color: AppColor.brown,
+                        borderRadius: BorderRadius.circular(100),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.green.withValues(alpha: 0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Mulai",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Image.asset(
+                            "assets/ic_forward_arrow.png",
+                            height: 14.h,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const BottomNavBarScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Akses Tanpa Login",
+                      style: TextStyle(
+                        color: AppColor.green,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColor.green,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

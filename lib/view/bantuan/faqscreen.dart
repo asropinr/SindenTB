@@ -22,11 +22,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     var status = await Prefence().getStatusLogin();
     if (status == true) {
       final hasData = faqController.getListFaq?.data?.isNotEmpty ?? false;
-      if (refresh == false) {
-        if (hasData) {
+      if (refresh == false && hasData) {
+        setState(() {
           isloading = false;
-          return;
-        }
+        });
+        return;
       }
 
       setState(() {
@@ -39,8 +39,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         isloading = false;
       });
     } else {
-      isloading = false;
-      setState(() {});
+      setState(() {
+        isloading = false;
+      });
     }
   }
 

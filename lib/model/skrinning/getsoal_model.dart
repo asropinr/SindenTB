@@ -29,7 +29,7 @@ class GetSoalSkrining {
 
 class Data {
   int? questionId;
-  String? questionOrder;
+  int? questionOrder;
   String? question;
   String? option1;
   String? option2;

@@ -26,7 +26,7 @@ class _InfoScreenState extends State<InfoScreen> {
               fit: StackFit.expand,
               children: [
                 Image.asset(
-                  "assets/Information 4.png",
+                  "assets/Information 4 2.png",
                   fit: BoxFit.fill,
                 ),
                 Padding(

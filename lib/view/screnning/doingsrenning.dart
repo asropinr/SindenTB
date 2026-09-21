@@ -92,9 +92,7 @@ class _DoingScreenState extends State<DoingScreen> {
                     textAlign: TextAlign.justify,
                   ),
                   Html(data: skriningController.getPsp!.data!.psp),
-                  Expanded(
-                      child:
-                          Html(data: skriningController.getPersetujuan!.data)),
+                  Html(data: skriningController.getPersetujuan!.data),
                   InkWell(
                     onTap: () {
                       setState(() {
