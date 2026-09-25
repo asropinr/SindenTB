@@ -298,11 +298,13 @@ class RegistrasiApi {
         "user_phone": userPhone,
         "user_address": userAddres,
         "user_university": userUniversity,
-        "dob": DateFormat(
-          "y-MM-d",
-        ).format(
-          dob,
-        ),
+        "dob": dob != ""
+            ? DateFormat(
+                "y-MM-d",
+              ).format(
+                dob,
+              )
+            : '',
         "u_provinsi_id": idProv,
         "u_kabupaten_id": idKab,
         "u_kecamatan_id": idKec,

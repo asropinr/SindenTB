@@ -521,8 +521,8 @@ class _BottoSheetMasukkanPasswordState
   Widget build(BuildContext context) {
     return Dialog(
       child: SizedBox(
-        height: 300.h,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Container(
             //   margin: EdgeInsets.only(top: 16.h),
@@ -637,7 +637,10 @@ class _BottoSheetMasukkanPasswordState
                   ),
                 );
               }
-            })
+            }),
+            SizedBox(
+              height: 20.h,
+            ),
           ],
         ),
       ),

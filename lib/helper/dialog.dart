@@ -23,9 +23,9 @@ class _DialogErrorState extends State<DialogError> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        height: 300.h,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 40),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               widget.title,
@@ -76,7 +76,10 @@ class _DialogErrorState extends State<DialogError> {
                   textAlign: TextAlign.center,
                 ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
           ],
         ),
       ),

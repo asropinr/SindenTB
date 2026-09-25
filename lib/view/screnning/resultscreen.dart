@@ -152,20 +152,30 @@ class _ResultScreenState extends State<ResultScreen> {
                               textAlign: TextAlign.justify,
                             ),
                             SizedBox(height: 8.h),
-                            GestureDetector(
-                              onTap: () async {
-                                await launchUrl(Uri.parse(
-                                    "https://tbindonesia.or.id/pustaka-tbc/pedoman/"));
+                            ...List.generate(
+                              skriningController
+                                  .postJawabanSkrining!.data!.citations!.length,
+                              (index) {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    await launchUrl(Uri.parse(skriningController
+                                        .postJawabanSkrining!
+                                        .data!
+                                        .citations![index]
+                                        .fileUrl!));
+                                  },
+                                  child: Text(
+                                    skriningController.postJawabanSkrining!
+                                        .data!.citations![index].title!,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ),
+                                );
                               },
-                              child: const Text(
-                                "Sumber: Pedoman Nasional Penanggulangan Tuberkulosis, Kementerian Kesehatan RI",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.blueAccent,
-                                ),
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),

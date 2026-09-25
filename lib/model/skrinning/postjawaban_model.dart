@@ -31,6 +31,7 @@ class Data {
   String? questionFkText;
   String? questionFkAnswer;
   String? statusResponden;
+  List<Citations>? citations;
 
   Data(
       {this.resultText,
@@ -40,7 +41,8 @@ class Data {
       this.questionFk,
       this.questionFkText,
       this.questionFkAnswer,
-      this.statusResponden});
+      this.statusResponden,
+      this.citations});
 
   Data.fromJson(Map<String, dynamic> json) {
     resultText = json['result_text'];
@@ -51,6 +53,12 @@ class Data {
     questionFkText = json['question_fk_text'];
     questionFkAnswer = json['question_fk_answer'];
     statusResponden = json['status_responden'];
+    if (json['citations'] != null) {
+      citations = <Citations>[];
+      json['citations'].forEach((v) {
+        citations!.add(Citations.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +71,46 @@ class Data {
     data['question_fk_text'] = questionFkText;
     data['question_fk_answer'] = questionFkAnswer;
     data['status_responden'] = statusResponden;
+    if (citations != null) {
+      data['citations'] = citations!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Citations {
+  String? id;
+  String? code;
+  String? title;
+  String? publisher;
+  String? sectionRef;
+  String? fileUrl;
+
+  Citations(
+      {this.id,
+      this.code,
+      this.title,
+      this.publisher,
+      this.sectionRef,
+      this.fileUrl});
+
+  Citations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    title = json['title'];
+    publisher = json['publisher'];
+    sectionRef = json['section_ref'];
+    fileUrl = json['file_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['code'] = code;
+    data['title'] = title;
+    data['publisher'] = publisher;
+    data['section_ref'] = sectionRef;
+    data['file_url'] = fileUrl;
     return data;
   }
 }

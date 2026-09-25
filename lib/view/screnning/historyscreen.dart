@@ -118,14 +118,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       skriningController.getHistory!.data!.length,
                       (index) => InkWell(
                         onTap: () async {
-                          Get.to(DetailHistoryScreen(
-                            idUser: skriningController
-                                .getHistory!.data![index].userFk!
-                                .toString(),
-                            idHistory: skriningController
-                                .getHistory!.data![index].skriningId!
-                                .toString(),
-                          ));
+                          if (skriningController
+                                  .getHistory!.data![index].resultText !=
+                              null) {
+                            Get.to(DetailHistoryScreen(
+                              idUser: skriningController
+                                  .getHistory!.data![index].userFk!
+                                  .toString(),
+                              idHistory: skriningController
+                                  .getHistory!.data![index].skriningId!
+                                  .toString(),
+                            ));
+                          }
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -180,7 +184,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               ),
                               Text(
                                 skriningController
-                                    .getHistory!.data![index].resultText!,
+                                        .getHistory!.data![index].resultText ??
+                                    "NO DATA",
                                 style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -191,38 +196,42 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Status : ",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColor.brown,
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(8.w),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(4.w),
-                                        color: getColorLabel(skriningController
-                                            .getHistory!
-                                            .data![index]
-                                            .resultTextColor!)),
-                                    child: Text(
-                                      skriningController.getHistory!
-                                          .data![index].statusResponden!
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
+                              if (skriningController
+                                      .getHistory!.data![index].resultText !=
+                                  null)
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Status : ",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
                                         color: AppColor.brown,
                                       ),
                                     ),
-                                  )
-                                ],
-                              )
+                                    Container(
+                                      padding: EdgeInsets.all(8.w),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4.w),
+                                          color: getColorLabel(
+                                              skriningController
+                                                  .getHistory!
+                                                  .data![index]
+                                                  .resultTextColor!)),
+                                      child: Text(
+                                        skriningController.getHistory!
+                                            .data![index].statusResponden!
+                                            .toUpperCase(),
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.brown,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
                             ],
                           ),
                         ),

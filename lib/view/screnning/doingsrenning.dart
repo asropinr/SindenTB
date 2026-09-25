@@ -138,10 +138,10 @@ class _DoingScreenState extends State<DoingScreen> {
                             Get.dialog(
                                 Dialog(
                                   child: Container(
-                                    height: 350.h,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 18, vertical: 40),
                                     child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
                                         const Text(
                                           "Pengumuman",

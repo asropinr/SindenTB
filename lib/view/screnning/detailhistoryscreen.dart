@@ -198,20 +198,31 @@ class _DetailHistoryScreenState extends State<DetailHistoryScreen> {
                                   textAlign: TextAlign.justify,
                                 ),
                                 SizedBox(height: 8.h),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await launchUrl(Uri.parse(
-                                        "https://tbindonesia.or.id/pustaka-tbc/pedoman/"));
+                                ...List.generate(
+                                  skriningController.getDetailHistory!.data!
+                                      .citations!.length,
+                                  (index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        await launchUrl(Uri.parse(
+                                            skriningController
+                                                .getDetailHistory!
+                                                .data!
+                                                .citations![index]
+                                                .fileUrl!));
+                                      },
+                                      child: Text(
+                                        skriningController.getDetailHistory!
+                                            .data!.citations![index].title!,
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: const Text(
-                                    "Sumber: Pedoman Nasional Penanggulangan Tuberkulosis, Kementerian Kesehatan RI",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.blueAccent,
-                                    ),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
                           ),
