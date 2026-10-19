@@ -157,10 +157,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             children: [
                               Text(
                                 DateFormat(
-                                  "dd MMMM y",
+                                  "dd MMMM y, HH:mm",
+                                  "id_ID",
                                 ).format(
                                   DateTime.parse(skriningController
-                                      .getHistory!.data![index].dateCreate!),
+                                          .getHistory!.data![index].dateCreate!)
+                                      .add(Duration(hours: 7)),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 14,

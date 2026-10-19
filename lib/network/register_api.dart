@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sinden_tb_app/constan/endpoint.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/helper/check_internet.dart';
 import 'package:sinden_tb_app/helper/logger_printer.dart';
 import 'package:sinden_tb_app/helper/network_response.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
 var _log = Logger(
   printer: SimpleLogPrinter("TO Api"),
@@ -96,6 +98,18 @@ class RegistrasiApi {
       );
       return NetworkResponse.internetError();
     } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        await sharedPreferences.clear();
+
+        Get.offAll(
+          () => const BottomNavBarScreen(),
+        );
+
+        return NetworkResponse.error();
+      }
       if (e.type == DioExceptionType.connectionTimeout) {
         Get.snackbar(
           "Request Timeout",

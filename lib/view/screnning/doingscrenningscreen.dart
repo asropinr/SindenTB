@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sinden_tb_app/constan/color.dart';
 import 'package:sinden_tb_app/constan/preference.dart';
+import 'package:sinden_tb_app/constan/shimmer.dart';
 import 'package:sinden_tb_app/controller/skrining_controller.dart';
 import 'package:sinden_tb_app/helper/bottom_sheet.dart';
 import 'package:sinden_tb_app/model/register/postlogin_model.dart';
@@ -20,6 +21,7 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
   SkriningController skriningController = Get.find<SkriningController>();
   PostLogin? postLogin;
   bool isLoading = true;
+  bool isSubmitting = false;
   TabController? controller;
   List<String> questionId = [];
   List<String> answer = [];
@@ -32,7 +34,7 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
     return postLogin!.data!.userId;
   }
 
-  getData() async {
+  Future<void> getData() async {
     setState(() {
       isLoading = true;
     });
@@ -61,14 +63,14 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
 
   postJawaban() async {
     setState(() {
-      isLoading = true;
+      isSubmitting = true;
     });
 
     final userId = await getUserId();
     await skriningController.postJawaban(userId, questionId, answer);
 
     setState(() {
-      isLoading = false;
+      isSubmitting = false;
     });
   }
 
@@ -129,9 +131,11 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
             ),
             centerTitle: true,
             leading: InkWell(
-              onTap: () {
-                Get.back();
-              },
+              onTap: isSubmitting
+                  ? null
+                  : () {
+                      Get.back();
+                    },
               child: Padding(
                 padding: const EdgeInsets.only(left: 32),
                 child: Image.asset(
@@ -445,93 +449,108 @@ class _DoingScrenningScrennState extends State<DoingScrenningScrenn>
                           vertical: 16.h, horizontal: 32.w),
                       width: MediaQuery.of(context).size.width,
                       color: AppColor.accentGreen,
-                      child: Row(
-                        children: [
-                          controller!.index == 0
-                              ? Expanded(child: Container())
-                              : Expanded(
+                      child: isSubmitting
+                          ? ShimmerHome(
+                              h: 60.h,
+                              w: MediaQuery.of(context).size.width,
+                              color: AppColor.green.withValues(alpha: 0.2),
+                            )
+                          : Row(
+                              children: [
+                                controller!.index == 0
+                                    ? Expanded(child: Container())
+                                    : Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller!.animateTo(
+                                                controller!.index - 1);
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.w),
+                                              color: AppColor.grey400,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 16.h),
+                                            child: const Text(
+                                              "Sebelumnya",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColor.grey700,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
                                   child: InkWell(
-                                    onTap: () {
-                                      controller!
-                                          .animateTo(controller!.index - 1);
-                                    },
+                                    onTap: isSubmitting
+                                        ? null
+                                        : () async {
+                                            if (controller!.index ==
+                                                skriningController
+                                                        .getSoalSkrining!
+                                                        .data!
+                                                        .length -
+                                                    1) {
+                                              await chekingData();
+                                              if (tidakDijawab.isEmpty) {
+                                                await postJawaban();
+                                                if (skriningController
+                                                        .postJawabanSkrining!
+                                                        .status ==
+                                                    1) {
+                                                  Get.to(ResultScreen());
+                                                } else {
+                                                  showBottomError(
+                                                      skriningController
+                                                          .postJawabanSkrining!
+                                                          .message!);
+                                                }
+                                              } else {
+                                                showBottomError(
+                                                    "Periksa Semua Jawaban Kamu Pastikan Sudah Menjawab Semua Pertanyaan Sebelum Submit");
+                                              }
+                                            } else {
+                                              controller!.animateTo(
+                                                  controller!.index + 1);
+                                            }
+                                          },
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(4.w),
-                                        color: AppColor.grey400,
+                                        color: AppColor.brown,
                                       ),
                                       padding:
                                           EdgeInsets.symmetric(vertical: 16.h),
-                                      child: const Text(
-                                        "Sebelumnya",
-                                        style: TextStyle(
+                                      child: Text(
+                                        controller!.index ==
+                                                skriningController
+                                                        .getSoalSkrining!
+                                                        .data!
+                                                        .length -
+                                                    1
+                                            ? "Submit"
+                                            : "Selanjutnya",
+                                        style: const TextStyle(
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColor.grey700,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
-                                ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () async {
-                                if (controller!.index ==
-                                    skriningController
-                                            .getSoalSkrining!.data!.length -
-                                        1) {
-                                  await chekingData();
-                                  if (tidakDijawab.isEmpty) {
-                                    await postJawaban();
-                                    if (skriningController
-                                            .postJawabanSkrining!.status ==
-                                        1) {
-                                      Get.to(ResultScreen());
-                                    } else {
-                                      showBottomError(skriningController
-                                          .postJawabanSkrining!.message!);
-                                    }
-                                  } else {
-                                    showBottomError(
-                                        "Periksa Semua Jawaban Kamu Pastikan Sudah Menjawab Semua Pertanyaan Sebelum Submit");
-                                  }
-                                } else {
-                                  controller!.animateTo(controller!.index + 1);
-                                }
-
-                                print("questionid : $questionId");
-                                print("answer : $answer");
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4.w),
-                                  color: AppColor.brown,
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 16.h),
-                                child: Text(
-                                  controller!.index ==
-                                          skriningController.getSoalSkrining!
-                                                  .data!.length -
-                                              1
-                                      ? "Submit"
-                                      : "Selanjutnya",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
                     ),
                   )
                 ],

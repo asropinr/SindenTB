@@ -11,7 +11,7 @@ import 'package:sinden_tb_app/constan/preference.dart';
 import 'package:sinden_tb_app/helper/check_internet.dart';
 import 'package:sinden_tb_app/helper/logger_printer.dart';
 import 'package:sinden_tb_app/helper/network_response.dart';
-import 'package:sinden_tb_app/view/auth/loginscreen.dart';
+import 'package:sinden_tb_app/view/bottomnavbar.dart';
 
 var _log = Logger(
   printer: SimpleLogPrinter("TO Api"),
@@ -104,7 +104,7 @@ class FaqApi {
         await sharedPreferences.clear();
 
         Get.offAll(
-          () => const LoginScreen(),
+          () => const BottomNavBarScreen(),
         );
 
         return NetworkResponse.error();

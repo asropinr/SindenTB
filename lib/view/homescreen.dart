@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 2,
                       ),
                     ),
-                    child: artikelController.getprofileuserModel == null
+                    child: postLogin?.data?.userFoto == null
                         ? Image.asset(
                             "assets/user_image.png",
                             fit: BoxFit.cover,
@@ -105,8 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(14.w),
                             child: Image.network(
-                              artikelController
-                                  .getprofileuserModel!.data!.userFoto!,
+                              postLogin!.data!.userFoto!,
                               fit: BoxFit.cover,
                               errorBuilder: (context, url, error) => ClipRRect(
                                 borderRadius: BorderRadius.circular(14.w),
@@ -136,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 4.h,
                         ),
-                        artikelController.getprofileuserModel == null
+                        postLogin?.data?.userName == null
                             ? Text(
                                 "User",
                                 style: const TextStyle(
@@ -146,9 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               )
                             : Text(
-                                artikelController
-                                        .getprofileuserModel!.data!.userName ??
-                                    "No name",
+                                postLogin!.data!.userName ?? "No name",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,

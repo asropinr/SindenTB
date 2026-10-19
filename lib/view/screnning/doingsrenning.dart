@@ -168,6 +168,7 @@ class _DoingScreenState extends State<DoingScreen> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
+                                            Get.back();
                                             Get.to(PreviewDataDiriScreen());
                                           },
                                           child: Container(
